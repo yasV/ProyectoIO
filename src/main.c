@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
-#include "pending.c"
+#include <unistd.h>
+
 
 int main(int argc, char *argv[]) {
     GtkBuilder      *builder; 
@@ -31,5 +32,5 @@ void on_btn_exit_clicked() {
 }
 
 void on_display_pending() {
-    displayPending(); 
+    system("./pending &"); 
 }

@@ -1,4 +1,5 @@
-int displayPending() {
+#include <gtk/gtk.h>
+int main() {
     GtkBuilder      *builder; 
     GtkWidget       *secondWindow;
  
