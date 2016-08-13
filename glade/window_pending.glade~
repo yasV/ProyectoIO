@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkWindow" id="window_pending">
+    <property name="width_request">315</property>
+    <property name="height_request">120</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Pendiente</property>
+    <property name="resizable">False</property>
+    <child>
+      <object class="GtkFixed" id="fixed_pending">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel" id="lbl_pending_msg">
+            <property name="width_request">278</property>
+            <property name="height_request">30</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">El programa solicitado no se encuentra disponible</property>
+          </object>
+          <packing>
+            <property name="x">21</property>
+            <property name="y">24</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_exitPending">
+            <property name="label" translatable="yes">OK</property>
+            <property name="width_request">150</property>
+            <property name="height_request">30</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="x">86</property>
+            <property name="y">77</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
