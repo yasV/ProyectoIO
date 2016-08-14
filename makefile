@@ -1,3 +1,7 @@
+CC = gcc
+GTKLIB = `pkg-config --cflags --libs gtk+-3.0`
+WARN = -Wall
+
 all:
-	gcc -o menu src/main.c -Wall `pkg-config --cflags --libs gtk+-3.0` -export-dynamic
-	gcc -o pending src/pending.c -Wall `pkg-config --cflags --libs gtk+-3.0` -export-dynamic
+	$(CC) -o menu src/main.c $(WARN) $(GTKLIB) -export-dynamic
+	$(CC) -o pending src/pending.c $(WARN) $(GTKLIB) -export-dynamic
