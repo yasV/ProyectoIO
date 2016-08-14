@@ -1,0 +1,2 @@
+# ProyectoIO
+El proyecto fue creado con glade 3.18.3, los archivos estan divididos en carpetas para un mayor control y orden. En el src se encuentran los archivos .c en los cuales estan las funciones creadas, en la carpeta glade se encuentran los archivos .glade donde se define cada pantalla. Para correr el programa procedemos a correr el makefile y posteriormente abrimos el archivo menu, escribiendo ./menu en la consola
