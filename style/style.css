@@ -1,0 +1,46 @@
+GtkWindow.mainWindow {
+	background-color:  #47423F; 
+}
+
+GtkWindow.pendingWindow {
+	background-color: #47423F;
+}
+
+GtkLabel.instruction {
+	font-size: 10px;
+	color: white;
+	font-weight: bolder;
+}
+
+GtkLabel.pending {
+	font-size: 10px;
+	color: white;
+	font-weight: bolder;
+}
+
+GtkButton {
+	background: #0B4C5F;
+	color: white;
+	border-color: #3ADF00;
+	border-width: 0;
+	border-radius: 0;
+}
+
+GtkButton:hover {
+  color: white;
+  font-weight: bold;
+  background: #3ADF00;
+}
+
+GtkButton.pendingButton {
+	background: #B40404;
+	color: white;
+	border-width: 0;
+	border-radius: 10px;
+}
+
+GtkButton.pendingButton:hover {
+	background: #B43104;
+	color: white;
+	font-weight: bold;
+}
