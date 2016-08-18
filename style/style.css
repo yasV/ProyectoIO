@@ -6,6 +6,10 @@ GtkWindow.pendingWindow {
 	background-color: #47423F;
 }
 
+GtkWindow.floydWindow {
+	background-color: #47423F;
+}
+
 GtkLabel.instruction {
 	font-size: 10px;
 	color: white;
@@ -13,6 +17,12 @@ GtkLabel.instruction {
 }
 
 GtkLabel.pending {
+	font-size: 10px;
+	color: white;
+	font-weight: bolder;
+}
+
+GtkLabel.floyd {
 	font-size: 10px;
 	color: white;
 	font-weight: bolder;
@@ -41,6 +51,17 @@ GtkButton.pendingButton {
 
 GtkButton.pendingButton:hover {
 	background: #B43104;
+	color: white;
+	font-weight: bold;
+}
+
+GtkButton.getNodesButton {
+	background: #088A68;
+	color: white;
+	border-radius: 10px;
+}
+
+GtkButton.getNodesButton:hover {
 	color: white;
 	font-weight: bold;
 }

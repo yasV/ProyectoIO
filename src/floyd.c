@@ -1,23 +1,29 @@
 #include <gtk/gtk.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-int main(int argc, char *argv[]) {
+GtkWidget *g_spin_totalNodes;
+
+int main() {
     GtkBuilder      *builder; 
-    GtkWidget       *windowMain;
+    GtkWidget       *windowFloyd;
     /*--- CSS -----------------*/
     GtkCssProvider  *provider;
     GdkDisplay      *display;
     GdkScreen       *screen;
     /*-------------------------*/
  
-    gtk_init(&argc, &argv);
+    gtk_init(NULL, NULL);
  
     builder = gtk_builder_new();
-    gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL);
+    gtk_builder_add_from_file (builder, "glade/window_floyd.glade", NULL);
  
-    windowMain = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
+    windowFloyd = GTK_WIDGET(gtk_builder_get_object(builder, "window_floyd"));
     gtk_builder_connect_signals(builder, NULL);
+
+    g_spin_totalNodes = GTK_WIDGET(gtk_builder_get_object(builder, "spn_totalNodes"));
+    gtk_spin_button_set_range (GTK_SPIN_BUTTON(g_spin_totalNodes),1,10);
+    gtk_spin_button_set_increments (GTK_SPIN_BUTTON(g_spin_totalNodes),1,3);
 
     /*---------------- CSS ------------------------------------------------*/
     provider = gtk_css_provider_new ();
@@ -35,20 +41,19 @@ int main(int argc, char *argv[]) {
     /*---------------- END CSS ------------------------------------------------*/
  
     g_object_unref(builder);
-    gtk_widget_show(windowMain);                
+ 
+    gtk_widget_show(windowFloyd);                
     gtk_main();
  
     return 0;
 }
  
-void on_exit_clicked() {
+// called when window is closed
+void on_window_floyd_destroy() {
     gtk_main_quit();
 }
 
-void on_display_floyd() {
-    system("./floyd &"); 
-}
-
-void on_display_pending() {
-    system("./pending &"); 
+void on_btn_getNodes_clicked() {
+    int nodes = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON(g_spin_totalNodes));
+    printf("Numero obtenido del spin = %d \n", nodes );
 }

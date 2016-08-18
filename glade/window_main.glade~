@@ -27,8 +27,8 @@
             </style>
           </object>
           <packing>
-            <property name="x">15</property>
-            <property name="y">26</property>
+            <property name="x">24</property>
+            <property name="y">17</property>
           </packing>
         </child>
         <child>
