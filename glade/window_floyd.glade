@@ -7,7 +7,6 @@
     <property name="height_request">400</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Algoritmo de Floyd</property>
-    <property name="resizable">False</property>
     <signal name="destroy" handler="on_window_floyd_destroy" swapped="no"/>
     <child>
       <object class="GtkFixed" id="fixed_floyd">
@@ -59,6 +58,18 @@
           <packing>
             <property name="x">349</property>
             <property name="y">29</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="grid_tableZero">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">78</property>
           </packing>
         </child>
       </object>

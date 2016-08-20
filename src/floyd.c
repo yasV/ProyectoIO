@@ -2,11 +2,14 @@
 #include <string.h>
 #include <stdio.h>
 
-GtkWidget *g_spin_totalNodes;
+GtkWidget   *g_spin_totalNodes;
+GtkWidget   *windowFloyd;
+GtkWidget   *g_tableDzero;
+char tableHeader[10]={'A','B','C','D','E','F','G','\0'};
 
 int main() {
     GtkBuilder      *builder; 
-    GtkWidget       *windowFloyd;
+    
     /*--- CSS -----------------*/
     GtkCssProvider  *provider;
     GdkDisplay      *display;
@@ -24,6 +27,9 @@ int main() {
     g_spin_totalNodes = GTK_WIDGET(gtk_builder_get_object(builder, "spn_totalNodes"));
     gtk_spin_button_set_range (GTK_SPIN_BUTTON(g_spin_totalNodes),1,10);
     gtk_spin_button_set_increments (GTK_SPIN_BUTTON(g_spin_totalNodes),1,3);
+
+    g_tableDzero = GTK_WIDGET(gtk_builder_get_object(builder, "grid_tableZero"));
+
 
     /*---------------- CSS ------------------------------------------------*/
     provider = gtk_css_provider_new ();
@@ -53,7 +59,33 @@ void on_window_floyd_destroy() {
     gtk_main_quit();
 }
 
+void createTableZero(int nodes) {
+    for (int index = 0; index < nodes+1; ++index)
+    {
+      gtk_grid_remove_row(GTK_GRID (g_tableDzero),index);
+      gtk_grid_remove_column(GTK_GRID (g_tableDzero),index);
+    }
+
+    for (int row = 1; row < nodes+1; ++row) 
+    {
+      for (int column = 1; column < nodes+1; ++column)
+      {
+        if ( row == column) {
+          printf("Misma entrada\n");
+        }
+        else {
+          GtkWidget *pass = gtk_entry_new();
+          gtk_entry_set_text(GTK_ENTRY (pass), "10000");
+          gtk_grid_attach (GTK_GRID (g_tableDzero), pass, column, row, 1, 1);
+        }
+      }
+    }
+    
+    gtk_widget_show_all(windowFloyd);
+}
+
 void on_btn_getNodes_clicked() {
     int nodes = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON(g_spin_totalNodes));
     printf("Numero obtenido del spin = %d \n", nodes );
+    createTableZero(nodes);
 }
