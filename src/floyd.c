@@ -1,15 +1,18 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 GtkWidget   *g_spin_totalNodes;
 GtkWidget   *windowFloyd;
 GtkWidget   *g_tableDzero;
-char tableHeader[10]={'A','B','C','D','E','F','G','\0'};
+GtkWidget   ***entrada;
+int countNodes = 0;
+const char *alphabet[27]={"A","B","C","D","E","F","G","H","I","J",
+"K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 int main() {
     GtkBuilder      *builder; 
-    
     /*--- CSS -----------------*/
     GtkCssProvider  *provider;
     GdkDisplay      *display;
@@ -43,11 +46,10 @@ int main() {
     GError *error = 0;
   
     gtk_css_provider_load_from_path (provider,
-        g_filename_to_utf8(home, strlen(home), &bytes_read, &bytes_written, &error),NULL);
+      g_filename_to_utf8(home, strlen(home), &bytes_read, &bytes_written, &error),NULL);
     /*---------------- END CSS ------------------------------------------------*/
  
     g_object_unref(builder);
- 
     gtk_widget_show(windowFloyd);                
     gtk_main();
  
@@ -60,28 +62,51 @@ void on_window_floyd_destroy() {
 }
 
 void createTableZero(int nodes) {
-    for (int index = 0; index < nodes+1; ++index)
-    {
-      gtk_grid_remove_row(GTK_GRID (g_tableDzero),index);
-      gtk_grid_remove_column(GTK_GRID (g_tableDzero),index);
-    }
+  entrada = calloc(nodes+1,sizeof(GtkWidget**));
+  countNodes = nodes;
 
-    for (int row = 1; row < nodes+1; ++row) 
+  for (int index = 0; index < nodes+1; ++index)
+  {
+    gtk_grid_remove_row(GTK_GRID (g_tableDzero),index);
+    gtk_grid_remove_column(GTK_GRID (g_tableDzero),index);
+  }
+
+  for(int j = 0; j < nodes+1; j++) {
+    entrada[j] = calloc(nodes+1,sizeof(GtkWidget*));
+  }
+
+  for(int row =0; row < nodes+1; row++) 
+  {
+    for(int column=0; column < nodes+1; column++) 
     {
-      for (int column = 1; column < nodes+1; ++column)
-      {
-        if ( row == column) {
-          printf("Misma entrada\n");
-        }
-        else {
-          GtkWidget *pass = gtk_entry_new();
-          gtk_entry_set_text(GTK_ENTRY (pass), "10000");
-          gtk_grid_attach (GTK_GRID (g_tableDzero), pass, column, row, 1, 1);
-        }
+      entrada[row][column] = gtk_entry_new();
+      gtk_grid_attach (GTK_GRID (g_tableDzero),entrada[row][column] , column, row, 1, 1);
+
+      if(row==column && row != 0 && column != 0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),"0");
+      }
+      if (row == 0 && column != 0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[column-1]);
+      }
+      if (column ==0 && row!=0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[row-1]);
       }
     }
-    
-    gtk_widget_show_all(windowFloyd);
+  }
+
+  gtk_widget_show_all(g_tableDzero); 
+}
+
+void on_btn_getData_clicked() {
+  printf("Nodos obtenidos: %d\n", countNodes);
+  for(int row =0; row < countNodes+1; row++) 
+  {
+    for(int column=0; column < countNodes+1; column++) 
+    {
+      printf("Valor obtenido de [%d][%d] :: %s \n",row,column,gtk_entry_get_text(GTK_ENTRY(entrada[row][column])));
+    }
+  }
+  free(entrada);
 }
 
 void on_btn_getNodes_clicked() {
