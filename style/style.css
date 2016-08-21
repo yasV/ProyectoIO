@@ -55,14 +55,47 @@ GtkButton.pendingButton:hover {
 	font-weight: bold;
 }
 
-GtkButton.getNodesButton {
-	background: #088A68;
+GtkButton.btn_CreateLoad {
+	background: #088A68; 
 	color: white;
 	border-radius: 10px;
 }
 
-GtkButton.getNodesButton:hover {
+GtkButton.btn_CreateLoad:hover {
 	color: white;
 	font-weight: bold;
 }
 
+GtkButton.boxEntry {
+	background: #29088A;
+	color: white;
+	border-radius: 0;
+}
+
+GtkButton.boxEntry:hover {
+	color: white;
+	font-weight: bold;
+	background: #7401DF;
+}
+
+GtkButton.btnPath {
+	background: #088A4B; 
+	color: white;
+	border-radius: 10px;
+}
+
+GtkButton.btnPath:hover {
+	color: white;
+	font-weight: bold;
+}
+
+GtkFileChooserButton.filechooser {
+	background: #A4A4A4; 
+	color: white;
+	border-radius: 0;
+}
+
+GtkFileChooserButton.filechooser:hover {
+	color: white;
+	font-weight: bold;
+}
