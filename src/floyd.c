@@ -2,6 +2,11 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "floyd_consola.h"
+
+
+FILE * matriz;
+
 
 GtkWidget       *windowFloyd;
 GtkWidget       *windowInitialFloyd;
@@ -124,6 +129,43 @@ void createTableZero(int nodes) {
     gtk_widget_show_all(windowFloyd); 
 }
 
+void setTableRoute(int MatrizD[][countNodes-1]){
+  entrada = calloc(countNodes,sizeof(GtkWidget**));
+  int nodes=countNodes;
+
+
+for(int j = 0; j < nodes; j++) {
+    entrada[j] = calloc(nodes,sizeof(GtkWidget*));
+  }
+
+  for(int row =0; row < nodes; row++) 
+  {
+    for(int column=0; column < nodes; column++) 
+    {
+
+      char str[10];
+      entrada[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(entrada[row][column]),8);
+      gtk_grid_attach (GTK_GRID (g_tableDzero),entrada[row][column] , column, row, 1, 1);
+
+      if (row == 0 && column != 0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[column-1]);
+      }
+      if (column ==0 && row!=0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[row-1]);
+      }
+
+      if (row!=0 && column != 0){
+        sprintf(str, "%d", MatrizD[row-1][column-1]);
+        printf("%s\n",str);
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),str); 
+      }
+    }
+  }
+
+    gtk_widget_show_all(windowFloyd); 
+}
+
 void on_btn_spnTotalNodes_clicked() {
     int nodes = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON(g_spin_totalNodes)) +1;
     printf("Numero obtenido del spin = %d \n", nodes );
@@ -149,13 +191,28 @@ void on_btn_filechooserBtn_clicked() {
 }
 
 void on_btn_getPath_clicked() {
+  matriz = fopen("MatrizD.cvs","w+");
+  int MatrizD[countNodes-1][countNodes-1];
   printf("Nodos obtenidos: %d\n", countNodes);
   for(int row =0; row < countNodes; row++) 
   {
+    fprintf(matriz,"\n");
     for(int column=0; column < countNodes; column++) 
     {
-      printf("Valor obtenido de [%d][%d] :: %s \n",row,column,gtk_entry_get_text(GTK_ENTRY(entrada[row][column])));
+       fprintf(matriz,"%s;",(gtk_entry_get_text(GTK_ENTRY(entrada[row][column]))));
+       if(row!=0 && column!=0){
+        MatrizD[row-1][column-1] = atoi(gtk_entry_get_text(GTK_ENTRY(entrada[row][column])));
+      }
+
     }
   }
+
   free(entrada);
+  fclose(matriz);
+  setCantidadNodos(countNodes-1);
+  floyd(MatrizD);
+  printf("%d\n",MatrizD[0][1] );
+  setTableRoute(MatrizD);
+  
+
 }
