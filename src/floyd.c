@@ -5,12 +5,12 @@
 
 GtkWidget       *windowFloyd;
 GtkWidget       *windowInitialFloyd;
-GtkWidget       *g_tableDzero;
 GtkWidget       *g_spin_totalNodes;
 GtkWidget       *g_frame_manualEntry;
 GtkWidget       *g_frame_fileEntry;
 GtkWidget       *g_filechooser_btn;
 GtkWidget       ***entrada;
+GtkWidget       *scrollWindow;
 
 int countNodes= 0;
 const char *alphabet[27]={"A","B","C","D","E","F","G","H","I","J",
@@ -36,15 +36,15 @@ int main() {
     windowInitialFloyd = GTK_WIDGET(gtk_builder_get_object(builder, "window_initial_floyd"));
     gtk_builder_connect_signals(builder, NULL);
 
-    
-    g_tableDzero = GTK_WIDGET(gtk_builder_get_object(builder, "grid_tableD"));
+    scrollWindow = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_table"));
+
     g_frame_fileEntry = GTK_WIDGET(gtk_builder_get_object(builder, "frame_fileEntry"));
     gtk_widget_hide(g_frame_fileEntry);
     g_frame_manualEntry = GTK_WIDGET(gtk_builder_get_object(builder, "frame_manualEntry"));
     gtk_widget_hide(g_frame_manualEntry);
 
     g_spin_totalNodes = GTK_WIDGET(gtk_builder_get_object(builder, "spn_totalNodes"));
-    gtk_spin_button_set_range (GTK_SPIN_BUTTON(g_spin_totalNodes),1,20);
+    gtk_spin_button_set_range (GTK_SPIN_BUTTON(g_spin_totalNodes),1,25);
     gtk_spin_button_set_increments (GTK_SPIN_BUTTON(g_spin_totalNodes),1,3);
 
     g_filechooser_btn = GTK_WIDGET(gtk_builder_get_object(builder, "filechooser_btn"));
@@ -87,12 +87,9 @@ void createTableZero(int nodes) {
   entrada = calloc(nodes,sizeof(GtkWidget**));
   countNodes = nodes;
 
-  for (int index = 0; index < nodes; ++index)
-  {
-    gtk_grid_remove_row(GTK_GRID (g_tableDzero),index);
-    gtk_grid_remove_column(GTK_GRID (g_tableDzero),index);
-  }
-
+  GtkWidget *table;
+  table = gtk_table_new (nodes, nodes, FALSE);
+  gtk_container_add (GTK_CONTAINER (scrollWindow), table);
 
   for(int j = 0; j < nodes; j++) {
     entrada[j] = calloc(nodes,sizeof(GtkWidget*));
@@ -104,7 +101,7 @@ void createTableZero(int nodes) {
     {
       entrada[row][column] = gtk_entry_new();
       gtk_entry_set_width_chars(GTK_ENTRY(entrada[row][column]),8);
-      gtk_grid_attach (GTK_GRID (g_tableDzero),entrada[row][column] , column, row, 1, 1);
+      gtk_table_attach_defaults (GTK_TABLE (table), entrada[row][column],column, column+1, row, row+1);
 
       if(row==column && row != 0 && column != 0){
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),"0");
