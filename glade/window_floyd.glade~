@@ -2,9 +2,149 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
+  <object class="GtkDialog" id="dialog_floyd">
+    <property name="width_request">320</property>
+    <property name="height_request">260</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Obtener Ruta</property>
+    <property name="resizable">False</property>
+    <property name="type_hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox1">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="cancelOptimalPath">
+                <property name="label" translatable="yes">Cancelar</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="getOptimalPath">
+                <property name="label" translatable="yes">Obtener</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="fixed4">
+            <property name="width_request">200</property>
+            <property name="height_request">200</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkLabel" id="lbl_instuction_dialog">
+                <property name="width_request">100</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Obtener ruta óptima entre</property>
+                <style>
+                  <class name="floyd"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">19</property>
+                <property name="y">28</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_instuction_dialog_salida">
+                <property name="width_request">100</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Salida:</property>
+                <style>
+                  <class name="floyd"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">24</property>
+                <property name="y">82</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_instuction_dialog_llegada">
+                <property name="width_request">100</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Llegada:</property>
+                <style>
+                  <class name="floyd"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">22</property>
+                <property name="y">131</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="combobox_for">
+                <property name="width_request">100</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="x">117</property>
+                <property name="y">84</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="combobox_to">
+                <property name="width_request">100</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="x">119</property>
+                <property name="y">136</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="floydWindow"/>
+    </style>
+  </object>
   <object class="GtkWindow" id="window_floyd">
-    <property name="width_request">600</property>
-    <property name="height_request">450</property>
+    <property name="width_request">800</property>
+    <property name="height_request">550</property>
     <property name="can_focus">False</property>
     <signal name="destroy" handler="on_window_floyd_destroy" swapped="no"/>
     <child>
@@ -31,8 +171,8 @@
         </child>
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow_table">
-            <property name="width_request">550</property>
-            <property name="height_request">350</property>
+            <property name="width_request">750</property>
+            <property name="height_request">450</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>

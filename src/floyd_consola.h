@@ -2,9 +2,8 @@
 #include <math.h>
 
 
-int infinito=10000000;
-int cantidadNodos=0;
-
+int infinito = 10000000;
+int cantidadNodos = 0;
 
 
 void mostrarMatrizIntermedia(int matrizD[][cantidadNodos]){
@@ -32,15 +31,15 @@ void setCantidadNodos(int Nodos){
 	cantidadNodos = Nodos;
 	printf("%d\n",cantidadNodos );
 }
-void floyd(int matrizD[][cantidadNodos]){
-	printf("HERE\n");
+
+void floyd(int matrizD[][cantidadNodos], int vuelta){
+	printf("Entre en floyd\n");
 
 	int matrizP[cantidadNodos][cantidadNodos];
 
 	for (int i=0;i<cantidadNodos;i++){
 		for (int j=0;j<cantidadNodos;j++){
 			matrizP[i][j] = 0;
-	
 		}
 	}
 
@@ -48,18 +47,18 @@ void floyd(int matrizD[][cantidadNodos]){
 	mostrarMatrizIntermedia(matrizD);
 	printf("-----------------\n" );
 
-	for (int k=0;k<5;k++){
+	//for (int k=0;k<5;k++){
 		for (int i=0;i<cantidadNodos;i++){
 			for(int j=0;j<cantidadNodos;j++){
-				int rutaAlterna = (matrizD[i][k] + matrizD[k][j]);
+				int rutaAlterna = (matrizD[i][vuelta] + matrizD[vuelta][j]);
 				if (matrizD[i][j] > rutaAlterna){
 					matrizD[i][j] = rutaAlterna;
-					matrizP[i][j] = k+1;
+					matrizP[i][j] = vuelta+1;
 				}
 			}
 		}
-		mostrarMatrizIntermedia(matrizD);
-	}
+		//mostrarMatrizIntermedia(matrizD);
+	//}
 
 	mostrarMatrizP(matrizP);
 	
