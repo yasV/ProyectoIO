@@ -28,7 +28,7 @@ GtkLabel.floyd {
 	font-weight: bolder;
 }
 
-GtkButton {
+GtkButton.menu {
 	background: #0B4C5F;
 	color: white;
 	border-color: #3ADF00;
@@ -36,10 +36,24 @@ GtkButton {
 	border-radius: 0;
 }
 
-GtkButton:hover {
+GtkButton.menu:hover {
   color: white;
   font-weight: bold;
   background: #3ADF00;
+}
+
+GtkButton.menuExit {
+	background: #B40404;
+	color: white;
+	border-color: #3ADF00;
+	border-width: 0;
+	border-radius: 0;
+}
+
+GtkButton.menuExit:hover {
+  color: white;
+  font-weight: bold;
+  background: #FF4000;
 }
 
 GtkButton.pendingButton {
@@ -98,4 +112,12 @@ GtkFileChooserButton.filechooser {
 GtkFileChooserButton.filechooser:hover {
 	color: white;
 	font-weight: bold;
+}
+
+#newValue {
+	background: green;
+}
+
+#oldValue {
+	background: white;
 }
