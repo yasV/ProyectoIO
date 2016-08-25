@@ -357,6 +357,19 @@ void applyFloyd() {
   totalRounds++;
 }
 
+void getOptimalPath(int inicio,int fin){
+
+  int medium = atoi(gtk_entry_get_text(GTK_ENTRY(entradaP[inicio][fin])));
+  if (medium==0){
+    printf("Ruta directa a %d \n", fin );
+  }
+  else{
+    printf("Tome %d y pase por %d \n",inicio,medium);
+    getOptimalPath(medium,fin);
+  }
+
+}
+
 void on_btn_getPath_clicked() {
   
   if (totalRounds == 0) {
@@ -368,11 +381,14 @@ void on_btn_getPath_clicked() {
       applyFloyd();
     }
     if (totalRounds == countNodes-1) {
-      gtk_widget_show(dialogFloyd);
+      //gtk_widget_show(dialogFloyd);
+      getOptimalPath(3,4);
     }
   }
 }
 
 void on_getOptimalPath_clicked() {
 
+
 }
+
