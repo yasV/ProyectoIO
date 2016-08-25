@@ -18,6 +18,8 @@ GtkWidget       *scrollWindow;
 GtkWidget       *g_tableDzero;
 GtkWidget       *dialogFloyd;
 
+char **header;
+
 int countNodes= 0;
 int totalRounds = 0;
 const char *alphabet[27]={"A","B","C","D","E","F","G","H","I","J",
@@ -173,21 +175,19 @@ void setTableFile(int Matriz[][countNodes-1]){
 }
 
 void setTableDistance(int MatrizD[][countNodes-1]){
-  const GdkColor RED_COLOR = { 0, 65535, 0, 0 };
-  const GdkColor BLACK_COLOR = {0,0,0,0};
   int nodes = countNodes;
-
-  for(int row =0; row < nodes; row++) 
+    for(int row =0; row < nodes; row++) 
   {
-    for(int column=0; column < nodes; column++) 
+  for(int column=0; column < nodes; column++) 
     {
       char str[10];
 
       if (row == 0 && column != 0){
-        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[column-1]);
+
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),header[column]);
       }
       if (column ==0 && row!=0){
-        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[row-1]);
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),header[row]);
       }
       if (column !=0 && row!=0){
         char entrada_anterior[10];
@@ -229,21 +229,7 @@ void on_btn_filechooserBtn_clicked() {
     countNodes = countNodesFiles();
     printf("%d\n",countNodes );
     int matrizF[countNodes-1][countNodes-1];
-    
     startFill(matrizF,"MatrizD.cvs");
-
-    printf("%d\n",matrizF[0][1] );
-    /*
-    matrizF[0][0] =0;
-    matrizF[0][1] =4;
-    matrizF[0][2] =5;
-    matrizF[1][0] =9;
-    matrizF[1][1] =0;
-    matrizF[1][2] =10;
-    matrizF[2][0] =11;
-    matrizF[2][1] =67;
-    matrizF[2][2] =0;
-    */
     setTableFile(matrizF);
     gtk_widget_hide(windowInitialFloyd);
     gtk_widget_show_now(windowFloyd);
@@ -253,15 +239,20 @@ void on_btn_filechooserBtn_clicked() {
 
 void createFile() {
   matriz = fopen("MatrizD.cvs","w+");
-
+  header = malloc(countNodes * sizeof(char*));
   for(int row =0; row < countNodes; row++) 
   {
+    fprintf(matriz,"\n");
     for(int column=0; column < countNodes; column++) 
     {
+      if (row == 0){
+          header[column] = gtk_entry_get_text(GTK_ENTRY(entrada[row][column]));
+       }
       fprintf(matriz,"%s;",(gtk_entry_get_text(GTK_ENTRY(entrada[row][column]))));
     }
   }
   fclose(matriz);
+  printf("En creadr%s\n", header[0]);
 }
 
 void applyFloyd() {
