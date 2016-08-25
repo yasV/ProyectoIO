@@ -131,7 +131,50 @@ void createTableZero(int nodes) {
     gtk_widget_show_all(windowFloyd); 
 }
 
+void setTableFile(int Matriz[][countNodes-1]){
+  int nodes=countNodes;
+    entrada = calloc(nodes,sizeof(GtkWidget**));
+  
+
+  g_tableDzero = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (scrollWindow), g_tableDzero);
+
+  for(int j = 0; j < nodes; j++) {
+    entrada[j] = calloc(nodes,sizeof(GtkWidget*));
+  }
+
+  for(int row =0; row < nodes; row++) 
+  {
+    for(int column=0; column < nodes; column++) 
+    {
+      char str[10];
+      entrada[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(entrada[row][column]),8);
+      gtk_grid_attach (GTK_GRID (g_tableDzero),entrada[row][column] , column, row, 1, 1);
+
+      if(row==column && row != 0 && column != 0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),"0");
+      }
+      if (row == 0 && column != 0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[column-1]);
+      }
+      if (column ==0 && row!=0){
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[row-1]);
+      }
+      if (column !=0 && row!=0 && row!=column){
+
+        sprintf(str, "%d", Matriz[row-1][column-1]);
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),str);
+      }
+    }
+  }
+
+   gtk_widget_show_all(windowFloyd);
+}
+
 void setTableDistance(int MatrizD[][countNodes-1]){
+  const GdkColor RED_COLOR = { 0, 65535, 0, 0 };
+  const GdkColor BLACK_COLOR = {0,0,0,0};
   int nodes = countNodes;
 
   for(int row =0; row < nodes; row++) 
@@ -147,10 +190,15 @@ void setTableDistance(int MatrizD[][countNodes-1]){
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[row-1]);
       }
       if (column !=0 && row!=0){
+        char entrada_anterior[10];
+        sprintf(entrada_anterior,"%s",gtk_entry_get_text(GTK_ENTRY(entrada[row][column])));
         sprintf(str, "%d", MatrizD[row-1][column-1]);
         printf("Vuelta Numero: %d\n", totalRounds);
         printf("Dato obtenido de matrixD: %s\n",str);
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),str);
+        if (strcmp(str,entrada_anterior)==1){
+          //MODIFICAR
+          }
       }
     }
   }
@@ -178,8 +226,29 @@ void on_btn_fileEntry_clicked() {
 
 void on_btn_filechooserBtn_clicked() {
     printf("Nombre del Archivo: %s\n", gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
+    countNodes = countNodesFiles();
+    printf("%d\n",countNodes );
+    int matrizF[countNodes-1][countNodes-1];
+    
+    startFill(matrizF,"MatrizD.cvs");
+
+    printf("%d\n",matrizF[0][1] );
+    /*
+    matrizF[0][0] =0;
+    matrizF[0][1] =4;
+    matrizF[0][2] =5;
+    matrizF[1][0] =9;
+    matrizF[1][1] =0;
+    matrizF[1][2] =10;
+    matrizF[2][0] =11;
+    matrizF[2][1] =67;
+    matrizF[2][2] =0;
+    */
+    setTableFile(matrizF);
     gtk_widget_hide(windowInitialFloyd);
     gtk_widget_show_now(windowFloyd);
+    
+
 }
 
 void createFile() {
@@ -219,7 +288,7 @@ void on_btn_getPath_clicked() {
     createFile();
     applyFloyd();
   } else {
-    if (totalRounds <= countNodes-1) {
+    if (totalRounds <countNodes) {
       applyFloyd();
     }
     if (totalRounds >= countNodes) {
