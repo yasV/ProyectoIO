@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "floyd_consola.h"
+#include "algorithm_floyd.h"
 
 
 FILE * matriz;
@@ -22,8 +22,13 @@ GtkWidget       *g_tableDzero;
 GtkWidget       *g_tableP;
 GtkWidget       *dialogFloyd;
 GtkWidget       *g_lbl_tableDnumber;
-
+GtkWidget       *g_cmbFor;
+GtkWidget       *g_cmbTo;
+GtkWidget       *g_fixed_cmbFor_container;
+GtkWidget       *g_fixed_cmbTo_container;
+GtkWidget       *g_lbl_betterPath;
 char **header;
+char *result;
 
 int countNodes= 0;
 int totalRounds = 0;
@@ -60,6 +65,8 @@ int main() {
     g_frame_manualEntry = GTK_WIDGET(gtk_builder_get_object(builder, "frame_manualEntry"));
     gtk_widget_hide(g_frame_manualEntry);
 
+    g_lbl_betterPath = GTK_WIDGET(gtk_builder_get_object(builder, "lbl_betterPath"));
+
     g_spin_totalNodes = GTK_WIDGET(gtk_builder_get_object(builder, "spn_totalNodes"));
     gtk_spin_button_set_range (GTK_SPIN_BUTTON(g_spin_totalNodes),1,27);
     gtk_spin_button_set_increments (GTK_SPIN_BUTTON(g_spin_totalNodes),1,3);
@@ -67,6 +74,12 @@ int main() {
     g_filechooser_btn = GTK_WIDGET(gtk_builder_get_object(builder, "filechooser_btn"));
 
     g_lbl_tableDnumber = GTK_WIDGET(gtk_builder_get_object(builder, "lbl_tableDnumber"));
+
+    g_cmbTo = GTK_WIDGET(gtk_builder_get_object(builder, "cmb_to"));
+    g_cmbFor = GTK_WIDGET(gtk_builder_get_object(builder, "cmb_for"));
+
+    g_fixed_cmbFor_container = GTK_WIDGET(gtk_builder_get_object(builder,"fixed_cmbFor_container"));
+    g_fixed_cmbTo_container = GTK_WIDGET(gtk_builder_get_object(builder,"fixed_cmbTo_container"));
 
     GtkFileFilter *filter = gtk_file_filter_new ();
     gtk_file_filter_add_pattern (filter, "*.cvs");
@@ -98,12 +111,14 @@ int main() {
  
 // called when window is closed
 void on_window_floyd_destroy() {
+  free(header);
   free(entrada);
   free(entradaP);
   gtk_main_quit();
 }
 
 void on_window_initial_floyd_destroy() {
+  free(header);
   free(entrada);
   free(entradaP);
   gtk_main_quit();
@@ -181,9 +196,8 @@ void createTableZero(int nodes) {
 
 void setTableFile(int Matriz[][countNodes-1]){
   int nodes=countNodes;
-    entrada = calloc(nodes,sizeof(GtkWidget**));
+  entrada = calloc(nodes,sizeof(GtkWidget**));
   
-
   g_tableDzero = gtk_grid_new ();
   gtk_container_add (GTK_CONTAINER (scrollWindow), g_tableDzero);
 
@@ -209,8 +223,7 @@ void setTableFile(int Matriz[][countNodes-1]){
       if (column ==0 && row!=0){
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[row-1]);
       }
-      if (column !=0 && row!=0 && row!=column){
-
+      if (column !=0 && row!=0 && row!=column) {
         sprintf(str, "%d", Matriz[row-1][column-1]);
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),str);
       }
@@ -222,15 +235,18 @@ void setTableFile(int Matriz[][countNodes-1]){
 
 void setTableDistance(int MatrizD[][countNodes-1]){
   int nodes = countNodes;
-    for(int row =0; row < nodes; row++){ 
-  
+
   char tableDInstruction[100] = "Datos obtenidos para la Tabla D(";
   char tableNumber[4];
   sprintf(tableNumber, "%d", totalRounds+1);
   strcat(tableDInstruction, tableNumber);
   strcat(tableDInstruction, ")");
+
   gtk_label_set_text(GTK_LABEL(g_lbl_tableDnumber), tableDInstruction);
-  for(int column=0; column < nodes; column++) 
+
+  for(int row =0; row < nodes; row++)
+  { 
+    for(int column=0; column < nodes; column++) 
     {
       char str[10];
 
@@ -253,7 +269,6 @@ void setTableDistance(int MatrizD[][countNodes-1]){
       }
     }
   }
-
 
   gtk_widget_show_all(scrollWindow); 
 }
@@ -278,7 +293,7 @@ void setTableP(int matrixP[][countNodes-1]){
         if (strcmp(str,gtk_entry_get_text(GTK_ENTRY(entradaP[row][column])))==0) {
           gtk_widget_set_name (entradaP[row][column],"oldValue");
         } else {
-          gtk_widget_set_name (entradaP[row][column],"newValue");
+          gtk_widget_set_name (entradaP[row][column],"newValueP");
         }
         gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),str);
       }
@@ -306,22 +321,20 @@ void on_btn_fileEntry_clicked() {
 }
 
 void on_btn_filechooserBtn_clicked() {
-    printf("Nombre del Archivo: %s\n", gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
-    countNodes = countNodesFiles(gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
-    printf("%d\n",countNodes );
-    int matrizF[countNodes-1][countNodes-1];
-    createTableP();
-    startFill(matrizF,gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
-    setTableFile(matrizF);
-    gtk_widget_hide(windowInitialFloyd);
-    gtk_widget_show_now(windowFloyd);
+  countNodes = countNodesFiles(gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
     
-
+  int matrizF[countNodes-1][countNodes-1];
+  createTableP();
+  startFill(matrizF,gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
+  setTableFile(matrizF);
+  gtk_widget_hide(windowInitialFloyd);
+  gtk_widget_show_now(windowFloyd);
 }
 
 void createFile() {
-  matriz = fopen("MatrizD.cvs","w+");
+  matriz = fopen("examples/programaFloyd.cvs","w+");
   header = malloc(countNodes * sizeof(char*));
+
   for(int row =0; row < countNodes; row++) 
   {
     for(int column=0; column < countNodes; column++) 
@@ -334,7 +347,6 @@ void createFile() {
      fprintf(matriz,"\n");
   }
   fclose(matriz);
-  printf("En creadr%s\n", header[0]);
 }
 
 void applyFloyd() {
@@ -358,20 +370,38 @@ void applyFloyd() {
 }
 
 void getOptimalPath(int inicio,int fin){
-
+  char flecha[7] = " --> ";
   int medium = atoi(gtk_entry_get_text(GTK_ENTRY(entradaP[inicio][fin])));
+
   if (medium==0){
-    printf("Ruta directa a %d \n", fin );
+    printf("Ruta directa de %d a %d \n",inicio,fin);
+    strcat(result,flecha);
+    strcat(result, header[fin]);
   }
   else{
+    strcat(result,flecha);
+    strcat(result, header[medium]);
     printf("Tome %d y pase por %d \n",inicio,medium);
     getOptimalPath(medium,fin);
   }
+  gtk_label_set_text (GTK_LABEL(g_lbl_betterPath),result);
+}
 
+void fillCombobox() {
+  g_cmbFor = gtk_combo_box_text_new ();
+  g_cmbTo = gtk_combo_box_text_new();
+
+  for (int i = 0; i < countNodes; ++i)
+  {
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT(g_cmbFor),NULL,header[i]);
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT(g_cmbTo),NULL,header[i]);
+  }
+  
+  gtk_container_add (GTK_CONTAINER (g_fixed_cmbFor_container), g_cmbFor);
+  gtk_container_add (GTK_CONTAINER (g_fixed_cmbTo_container), g_cmbTo);
 }
 
 void on_btn_getPath_clicked() {
-  
   if (totalRounds == 0) {
     setCantidadNodos(countNodes-1);
     createFile();
@@ -381,14 +411,28 @@ void on_btn_getPath_clicked() {
       applyFloyd();
     }
     if (totalRounds == countNodes-1) {
-      //gtk_widget_show(dialogFloyd);
-      getOptimalPath(3,4);
+      fillCombobox();
+      gtk_widget_show_all(dialogFloyd);
     }
   }
 }
 
+
 void on_getOptimalPath_clicked() {
-
-
+  int inicio,fin;
+  free(result);
+  result = malloc(sizeof(char) * 100);
+  for (int i = 0; i < countNodes; ++i)
+  {
+    if(strcmp(header[i],gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(g_cmbFor))) == 0) {
+      inicio = i;
+    }
+    if(strcmp(header[i],gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(g_cmbTo))) == 0) {
+      fin = i;
+    }
+  }
+  result = header[inicio];
+  printf("Inicio: %d, Salida: %d\n",inicio,fin);
+  getOptimalPath(inicio,fin);
 }
 

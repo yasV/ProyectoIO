@@ -16,8 +16,6 @@ void setCantidadNodos(int Nodos) {
 }
 
 void floyd(int matrizD[][cantidadNodos], int matrizP[][cantidadNodos], int vuelta) {
-	//int matrizP[cantidadNodos][cantidadNodos];
-	printf("%d\n", cantidadNodos);
 
 	for (int i = 0; i < cantidadNodos; i++) {
 		for(int j = 0; j < cantidadNodos; j++) {
@@ -28,14 +26,12 @@ void floyd(int matrizD[][cantidadNodos], int matrizP[][cantidadNodos], int vuelt
 			}
 		}
 	}
-
 }
-
 
 /*Read Files*/
 void fillBuffer(int _val) {
 	if (strlen(buffer) == 0) {
-		char dato=(char)_val;
+		char dato= (char)_val;
 		char auxiliar[] = {(char)_val,'\0'};
 		strcat(buffer,auxiliar);
 	} else{
@@ -92,7 +88,6 @@ void setMatriz(int matrizD[][cantidadNodos-1]) {
 		 	}
 		 	if (accion == 1) {
 			 	int valor = atoi(buffer);
-		 		printf("%d\n",valor);
 		 		matrizD[fila][columna] = valor;
 		 		columna ++;
 		 	}	
@@ -117,9 +112,8 @@ int countNodesFiles(char * direccion){
 		if (ch ==';'){
 			cantidadNodos ++;
 		}
-		}
+	}
 	
-
 	fclose(archivo);
 	return cantidadNodos;
 }

@@ -12,7 +12,7 @@
         <property name="can_focus">False</property>
         <child>
           <object class="GtkLabel" id="lbl_instuction_dialog">
-            <property name="width_request">100</property>
+            <property name="width_request">147</property>
             <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -22,8 +22,8 @@
             </style>
           </object>
           <packing>
-            <property name="x">29</property>
-            <property name="y">24</property>
+            <property name="x">32</property>
+            <property name="y">18</property>
           </packing>
         </child>
         <child>
@@ -40,8 +40,8 @@
             </style>
           </object>
           <packing>
-            <property name="x">287</property>
-            <property name="y">208</property>
+            <property name="x">273</property>
+            <property name="y">163</property>
           </packing>
         </child>
         <child>
@@ -56,8 +56,8 @@
             </style>
           </object>
           <packing>
-            <property name="x">47</property>
-            <property name="y">72</property>
+            <property name="x">52</property>
+            <property name="y">55</property>
           </packing>
         </child>
         <child>
@@ -72,32 +72,47 @@
             </style>
           </object>
           <packing>
-            <property name="x">49</property>
-            <property name="y">129</property>
+            <property name="x">48</property>
+            <property name="y">101</property>
           </packing>
         </child>
         <child>
-          <object class="GtkComboBox" id="cmb_for">
+          <object class="GtkFixed" id="fixed_cmbFor_container">
             <property name="width_request">200</property>
             <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
           <packing>
-            <property name="x">158</property>
-            <property name="y">70</property>
+            <property name="x">150</property>
+            <property name="y">53</property>
           </packing>
         </child>
         <child>
-          <object class="GtkComboBox" id="cmb_to">
+          <object class="GtkFixed" id="fixed_cmbTo_container">
             <property name="width_request">200</property>
             <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
           <packing>
-            <property name="x">158</property>
-            <property name="y">128</property>
+            <property name="x">145</property>
+            <property name="y">103</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="lbl_betterPath">
+            <property name="width_request">330</property>
+            <property name="height_request">30</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="floyd"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">27</property>
+            <property name="y">208</property>
           </packing>
         </child>
       </object>

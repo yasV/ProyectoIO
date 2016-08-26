@@ -115,9 +115,13 @@ GtkFileChooserButton.filechooser:hover {
 }
 
 #newValue {
-	background: green;
+	background: #088A29;
 }
 
 #oldValue {
-	background: white;
+	background: #F2F2F2;
+}
+
+#newValueP {
+	background: #F4FA58;
 }
