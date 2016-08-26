@@ -140,6 +140,7 @@ void createTableP() {
     {
       entradaP[row][column] = gtk_entry_new();
       gtk_entry_set_width_chars(GTK_ENTRY(entradaP[row][column]),8);
+      gtk_widget_set_sensitive(entradaP[row][column],FALSE);
       gtk_grid_attach (GTK_GRID (g_tableP),entradaP[row][column] , column, row, 1, 1);
 
       if(row != 0 && column != 0){
@@ -178,6 +179,7 @@ void createTableZero(int nodes) {
 
       if(row==column && row != 0 && column != 0){
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),"0");
+        gtk_widget_set_sensitive(entrada[row][column],FALSE);
       }
       if (row == 0 && column != 0){
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[column-1]);
@@ -213,9 +215,10 @@ void setTableFile(int Matriz[][countNodes-1]){
       entrada[row][column] = gtk_entry_new();
       gtk_entry_set_width_chars(GTK_ENTRY(entrada[row][column]),8);
       gtk_grid_attach (GTK_GRID (g_tableDzero),entrada[row][column] , column, row, 1, 1);
-
+      
       if(row==column && row != 0 && column != 0){
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),"0");
+        gtk_widget_set_sensitive(entrada[row][column],FALSE);
       }
       if (row == 0 && column != 0){
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[column-1]);
@@ -249,9 +252,9 @@ void setTableDistance(int MatrizD[][countNodes-1]){
     for(int column=0; column < nodes; column++) 
     {
       char str[10];
+      gtk_widget_set_sensitive(entrada[row][column],FALSE);
 
       if (row == 0 && column != 0){
-
         gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),header[column]);
       }
       if (column ==0 && row!=0){
@@ -283,10 +286,10 @@ void setTableP(int matrixP[][countNodes-1]){
       char str[10];
 
       if (row == 0 && column != 0){
-        gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),alphabet[column-1]);
+        gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),header[column]);
       }
       if (column ==0 && row!=0){
-        gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),alphabet[row-1]);
+        gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),header[row]);
       }
       if (column !=0 && row!=0){
         sprintf(str, "%d", matrixP[row-1][column-1]);
