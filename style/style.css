@@ -6,7 +6,11 @@ GtkWindow.pendingWindow {
 	background-color: #47423F;
 }
 
-GtkWindow.floydWindow {
+GtkWindow.floydWindow.knapsackWindow {
+	background-color: #47423F;
+}
+
+GtkWindow.knapsackWindow {
 	background-color: #47423F;
 }
 

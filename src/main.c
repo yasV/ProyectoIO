@@ -49,6 +49,11 @@ void on_display_floyd() {
     system("./floyd &"); 
 }
 
+void on_btn_knapsack_clicked() {
+    system("./knapsack &");
+}
+
 void on_display_pending() {
     system("./pending &"); 
 }
+
