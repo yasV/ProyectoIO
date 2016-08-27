@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int pid;
-
 int main(int argc, char *argv[]) {
     GtkBuilder      *builder; 
     GtkWidget       *windowMain;
@@ -44,10 +42,11 @@ int main(int argc, char *argv[]) {
 }
  
 void on_exit_clicked() {
-    if(pid == 0){
-       kill(pid, SIGTERM);
-    }
     gtk_main_quit();
+}
+
+void on_display_floyd() {
+    system("./floyd &"); 
 }
 
 void on_display_pending() {

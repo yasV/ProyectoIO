@@ -5,3 +5,4 @@ WARN = -Wall
 all:
 	$(CC) -o menu src/main.c $(WARN) $(GTKLIB) -export-dynamic
 	$(CC) -o pending src/pending.c $(WARN) $(GTKLIB) -export-dynamic
+	$(CC) -o floyd src/floyd.c $(WARN) $(GTKLIB) -export-dynamic
