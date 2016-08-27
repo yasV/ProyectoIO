@@ -6,7 +6,7 @@ GtkWindow.pendingWindow {
 	background-color: #47423F;
 }
 
-GtkWindow.floydWindow.knapsackWindow {
+GtkWindow.floydWindow {
 	background-color: #47423F;
 }
 
@@ -17,19 +17,19 @@ GtkWindow.knapsackWindow {
 GtkLabel.instruction {
 	font-size: 10px;
 	color: white;
-	font-weight: bolder;
+	font-weight: bold;
 }
 
 GtkLabel.pending {
 	font-size: 10px;
 	color: white;
-	font-weight: bolder;
+	font-weight: bold;
 }
 
 GtkLabel.floyd {
 	font-size: 10px;
 	color: white;
-	font-weight: bolder;
+	font-weight: bold;
 }
 
 GtkButton.menu {
@@ -134,4 +134,39 @@ GtkFileChooserButton.filechooser:hover {
 	background: #F4FA58;
 	color: black;
 	font-weight: bold;
+}
+
+/**MOCHILA**/
+GtkButton.boxEntryKnapsack {
+	background: #DF3A01;
+	color: white;
+	border-radius: 0;
+}
+
+GtkButton.boxEntryKnapsack:hover {
+	color: white;
+	font-weight: bold;
+	background: #DBA901;
+}
+
+GtkEntry.entryKnapsack {
+	border-radius: 0;
+	background: #E6E6E6;
+}
+
+GtkButton.buttonKnapsack {
+	border-radius: 0;
+	background: #DF3A01;
+	color: white;
+	border: solid #DF3A01;
+}
+GtkButton.buttonKnapsack:hover {
+	color: white;
+	font-weight: bold;
+}
+
+#rowHeader {
+	background: #B43104;
+	color: white;
+	border-radius: 0;
 }

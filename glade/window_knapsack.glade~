@@ -14,7 +14,7 @@
         <child>
           <object class="GtkFrame" id="frame_manualEntry">
             <property name="width_request">230</property>
-            <property name="height_request">110</property>
+            <property name="height_request">130</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
@@ -34,6 +34,9 @@
                         <property name="height_request">30</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <style>
+                          <class name="entryKnapsack"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="x">23</property>
@@ -46,6 +49,9 @@
                         <property name="height_request">30</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <style>
+                          <class name="entryKnapsack"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="x">24</property>
@@ -61,10 +67,13 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <signal name="clicked" handler="on_btn_getEntries_clicked" swapped="no"/>
+                        <style>
+                          <class name="buttonKnapsack"/>
+                        </style>
                       </object>
                       <packing>
-                        <property name="x">124</property>
-                        <property name="y">79</property>
+                        <property name="x">123</property>
+                        <property name="y">86</property>
                       </packing>
                     </child>
                   </object>
@@ -102,6 +111,9 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_btn_manualEntry_clicked" swapped="no"/>
+                <style>
+                  <class name="boxEntryKnapsack"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -117,6 +129,9 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_btn_fileEntry_clicked" swapped="no"/>
+                <style>
+                  <class name="boxEntryKnapsack"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -168,6 +183,9 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <signal name="clicked" handler="on_btn_getFile_clicked" swapped="no"/>
+                        <style>
+                          <class name="buttonKnapsack"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="x">124</property>
@@ -265,16 +283,19 @@
         <child>
           <object class="GtkButton" id="btn_getTableData">
             <property name="label" translatable="yes">Obtener Solucion</property>
-            <property name="width_request">500</property>
+            <property name="width_request">580</property>
             <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <signal name="clicked" handler="on_btn_getTableData_clicked" swapped="no"/>
+            <style>
+              <class name="buttonKnapsack"/>
+            </style>
           </object>
           <packing>
-            <property name="x">60</property>
-            <property name="y">419</property>
+            <property name="x">48</property>
+            <property name="y">418</property>
           </packing>
         </child>
         <child>
@@ -298,7 +319,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkEntry" id="entry_fileName">
-                        <property name="width_request">305</property>
+                        <property name="width_request">315</property>
                         <property name="height_request">30</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
