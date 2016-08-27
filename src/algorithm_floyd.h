@@ -62,20 +62,26 @@ int escaner() {
 	}
 }
 
-void setMatriz(int matrizD[][cantidadNodos-1]) {
+void setMatriz(int matrizD[][cantidadNodos-1],char ** headers) {
 	int fila = 0;
 	int columna = 0;
 	int flag=0;
 	int accion = escaner();
 	int var = 0;
+	char data[9];
+
 
 	while (var < cantidadNodos) {
-		if (accion == 1){
-			var ++;
-	 	}
+		
 		if (accion == 0){
 			break;
 	 	}
+	 	char * data = malloc(1000);
+	 	strcpy(data,buffer);
+
+	 	headers[var] = data;
+
+	 	var ++;
 	 	accion = escaner();
 	}
 
@@ -97,6 +103,10 @@ void setMatriz(int matrizD[][cantidadNodos-1]) {
 	 	flag = 0;
 	 	accion = escaner();
 	}
+
+
+
+	
 }
 
 
@@ -118,9 +128,10 @@ int countNodesFiles(char * direccion){
 	return cantidadNodos;
 }
 
-void startFill(int matrizD[][cantidadNodos-1],char *direccion){
+void startFill(int matrizD[][cantidadNodos-1],char *direccion,char ** headers){
 	archivo = fopen(direccion,"r");
-	setMatriz(matrizD);
+	setMatriz(matrizD,headers);
+
 }
 
 

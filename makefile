@@ -1,6 +1,6 @@
 CC = gcc
 GTKLIB = `pkg-config --cflags --libs gtk+-3.0`
-WARN = -Wall
+WARN = -Wall -std=c99
 
 all:
 	$(CC) -o menu src/main.c $(WARN) $(GTKLIB) -export-dynamic

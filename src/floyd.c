@@ -35,6 +35,8 @@ int totalRounds = 0;
 const char *alphabet[27]={"A","B","C","D","E","F","G","H","I","J",
 "K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
+int loadFile=0;
+
 int main() {
     GtkBuilder      *builder; 
     /*--- CSS -----------------*/
@@ -147,10 +149,21 @@ void createTableP() {
         gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),"0");
       }
       if (row == 0 && column != 0){
+        if (loadFile == 1){
+          gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),header[column]);
+        }
+        else{
         gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),alphabet[column-1]);
       }
+      }
       if (column ==0 && row!=0){
-        gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),alphabet[row-1]);
+        if (loadFile ==1){
+          gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),header[row]);
+        }
+        else{
+          gtk_entry_set_text (GTK_ENTRY(entradaP[row][column]),alphabet[row-1]);  
+        }
+        
       }
     }
   }
@@ -199,6 +212,7 @@ void createTableZero(int nodes) {
 void setTableFile(int Matriz[][countNodes-1]){
   int nodes=countNodes;
   entrada = calloc(nodes,sizeof(GtkWidget**));
+
   
   g_tableDzero = gtk_grid_new ();
   gtk_container_add (GTK_CONTAINER (scrollWindow), g_tableDzero);
@@ -221,10 +235,10 @@ void setTableFile(int Matriz[][countNodes-1]){
         gtk_widget_set_sensitive(entrada[row][column],FALSE);
       }
       if (row == 0 && column != 0){
-        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[column-1]);
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),header[column]);
       }
       if (column ==0 && row!=0){
-        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),alphabet[row-1]);
+        gtk_entry_set_text (GTK_ENTRY(entrada[row][column]),header[row]);
       }
       if (column !=0 && row!=0 && row!=column) {
         sprintf(str, "%d", Matriz[row-1][column-1]);
@@ -325,10 +339,12 @@ void on_btn_fileEntry_clicked() {
 
 void on_btn_filechooserBtn_clicked() {
   countNodes = countNodesFiles(gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
-    
+  loadFile = 1;
   int matrizF[countNodes-1][countNodes-1];
+  
+  header = malloc(countNodes * sizeof(char*));
+  startFill(matrizF,gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)),header);
   createTableP();
-  startFill(matrizF,gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
   setTableFile(matrizF);
   gtk_widget_hide(windowInitialFloyd);
   gtk_widget_show_now(windowFloyd);
