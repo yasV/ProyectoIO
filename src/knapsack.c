@@ -20,6 +20,7 @@ FILE 						*file_tableData;
 const char *alphabet[27]={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 const char *rowHeader[4] = {"","Valor","Costo","Cantidad Disponible"};
 int totalObjects = 0;
+char **header;
 
 int main() {
     GtkBuilder      *builder; 
@@ -128,7 +129,7 @@ void createTableData() {
   gtk_widget_show_all(windowTableData);
 }
 
-void createTableDataFile(int Matriz[][totalObjects-1]){
+void createTableDataFile(int Matriz[totalObjects-1][3]){
 	tableData = calloc(totalObjects,sizeof(GtkWidget**));
 
   g_tableData = gtk_grid_new ();
@@ -147,12 +148,19 @@ void createTableDataFile(int Matriz[][totalObjects-1]){
       gtk_entry_set_width_chars(GTK_ENTRY(tableData[row][column]),10);
       gtk_grid_attach (GTK_GRID (g_tableData),tableData[row][column] , column, row, 1, 1);
       
+      if(row!=0 && column==0){
+        printf("%d\n",row);
+        gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),header[row]);
+        gtk_widget_set_name(tableData[row][column],"rowHeader");
+        gtk_widget_set_sensitive(tableData[row][column],FALSE); 
+      }
+
       if (row == 0 && column != 0){
         gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),rowHeader[column]);
         gtk_widget_set_name(tableData[row][column],"rowHeader");
         gtk_widget_set_sensitive(tableData[row][column],FALSE);
       }
-      if (column !=0 && row!=0 && row!=column) {
+      if (column !=0 && row!=0) {
         sprintf(str, "%d", Matriz[row-1][column-1]);
         gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),str);
       }
@@ -200,13 +208,15 @@ void on_btn_getEntries_clicked() {
 }
 
 void on_btn_getFile_clicked() {
+  header = malloc(totalObjects * sizeof(char*));
 	printf("Direccion Archivo: %s\n", gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
 	totalObjects = countObjectsFiles (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
 	printf("Cantidad leida%d \n", totalObjects );
 
-	int matrixData[totalObjects-1][4];
-	startFill(matrixData,gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)));
-	createTableDataFile(matrixData);
+	int matrixData[totalObjects-1][3];
+	startFill(matrixData,gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)),header);
+
+  createTableDataFile(matrixData);
 }
 
 void on_btn_getTableData_clicked() {

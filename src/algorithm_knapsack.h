@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-int totalObjects = 0;
+int totalObjectsCount = 0;
 FILE * fileTableData;
 char buffer[9];
 char fila[9];
@@ -43,48 +43,57 @@ int escaner() {
 	}
 }
 
-void setMatriz(int matrizD[][4]) {
+void setMatriz(int matrizD[totalObjectsCount-1][3],char ** headers) {
 	int fila = 0;
 	int columna = 0;
 	int flag=0;
 	int accion = escaner();
 
-	while (fila < totalObjects-1) {
+	while (fila < totalObjectsCount) {
 	 	while (columna < 4) {
-		 	accion = escaner();
-		 	if (flag == 0) {
-		 		flag=1;
-		 		accion=escaner();
-		 	}
-		 	if (accion == 1) {
+	 		if (accion == 1 && fila!=0 && flag==1) {
 			 	int valor = atoi(buffer);
-		 		matrizD[fila][columna] = valor;
-		 		columna ++;
-		 	}	
+		 		matrizD[fila-1][columna-1] = valor;
+		 	}
+		 	if (flag == 0 && accion==1 && fila!=0) {
+		 		char * data = malloc(1000);
+	 			strcpy(data,buffer);
+				headers[fila] = data;
+		 		flag = 1;
+		 	}
+		 	columna ++;
+		 	accion = escaner();	
 	 	}
 		columna = 0;
 	 	fila ++;
 	 	flag = 0;
 	 	accion = escaner();
-	}	
+	}
+	
+
+
+
+	
 }
 
 int countObjectsFiles(char * address){
 	fileTableData = fopen(address,"r");
 	int ch;
 
+
 	while(feof(fileTableData) == 0) {  
 		ch = fgetc(fileTableData);
 		if (ch == '\n'){
-			totalObjects ++;
+			totalObjectsCount ++;
 		}
 	}
+
 	
 	fclose(fileTableData);
-	return totalObjects;
+	return totalObjectsCount;
 }
 
-void startFill(int matrizD[][4],char *address){
+void startFill(int matrizD[][3],char *address,char ** headers){
 	fileTableData = fopen(address,"r");
-	setMatriz(matrizD);
+	setMatriz(matrizD,headers);
 }
