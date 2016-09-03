@@ -2,6 +2,73 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
+  <object class="GtkWindow" id="window_finalTable">
+    <property name="width_request">650</property>
+    <property name="height_request">570</property>
+    <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_window_finalTable_destroy" swapped="no"/>
+    <child>
+      <object class="GtkFixed" id="fixed8">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkFrame" id="frame4">
+            <property name="width_request">600</property>
+            <property name="height_request">400</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment6">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed9">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow_finalTable">
+                        <property name="width_request">580</property>
+                        <property name="height_request">400</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="y">6</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="lbl_frame4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Tabla Final de la Mochila</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">33</property>
+            <property name="y">40</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="knapsackWindow"/>
+    </style>
+  </object>
   <object class="GtkWindow" id="window_initial_knapsack">
     <property name="width_request">550</property>
     <property name="height_request">270</property>
@@ -29,21 +96,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkEntry" id="entry_knapsackCapacity">
-                        <property name="width_request">200</property>
-                        <property name="height_request">30</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <style>
-                          <class name="entryKnapsack"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">23</property>
-                        <property name="y">7</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkEntry" id="entry_totalObjects">
                         <property name="width_request">200</property>
                         <property name="height_request">30</property>
@@ -54,8 +106,8 @@
                         </style>
                       </object>
                       <packing>
-                        <property name="x">24</property>
-                        <property name="y">45</property>
+                        <property name="x">21</property>
+                        <property name="y">7</property>
                       </packing>
                     </child>
                     <child>
@@ -72,8 +124,8 @@
                         </style>
                       </object>
                       <packing>
-                        <property name="x">123</property>
-                        <property name="y">86</property>
+                        <property name="x">121</property>
+                        <property name="y">47</property>
                       </packing>
                     </child>
                   </object>
@@ -220,7 +272,7 @@
   </object>
   <object class="GtkWindow" id="window_tableData">
     <property name="width_request">650</property>
-    <property name="height_request">470</property>
+    <property name="height_request">570</property>
     <property name="can_focus">False</property>
     <signal name="destroy" handler="on_window_tableData_destroy" swapped="no"/>
     <child>
@@ -230,7 +282,7 @@
         <child>
           <object class="GtkFrame" id="frame1">
             <property name="width_request">600</property>
-            <property name="height_request">300</property>
+            <property name="height_request">324</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
@@ -277,13 +329,13 @@
           </object>
           <packing>
             <property name="x">28</property>
-            <property name="y">17</property>
+            <property name="y">82</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="btn_getTableData">
             <property name="label" translatable="yes">Obtener Solucion</property>
-            <property name="width_request">580</property>
+            <property name="width_request">200</property>
             <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -294,14 +346,14 @@
             </style>
           </object>
           <packing>
-            <property name="x">48</property>
-            <property name="y">418</property>
+            <property name="x">425</property>
+            <property name="y">504</property>
           </packing>
         </child>
         <child>
           <object class="GtkFrame" id="frame2">
-            <property name="width_request">300</property>
-            <property name="height_request">30</property>
+            <property name="width_request">333</property>
+            <property name="height_request">54</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
@@ -323,6 +375,9 @@
                         <property name="height_request">30</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <style>
+                          <class name="entryKnapsack"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="x">6</property>
@@ -345,8 +400,57 @@
             </child>
           </object>
           <packing>
-            <property name="x">30</property>
-            <property name="y">351</property>
+            <property name="x">29</property>
+            <property name="y">423</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame3">
+            <property name="width_request">327</property>
+            <property name="height_request">49</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment5">
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkEntry" id="entry_knapsackCapacity">
+                        <property name="width_request">315</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <style>
+                          <class name="entryKnapsack"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Ingrese el tamaño de la mochila:</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">32</property>
+            <property name="y">20</property>
           </packing>
         </child>
       </object>

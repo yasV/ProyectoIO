@@ -10,10 +10,6 @@ GtkWindow.floydWindow {
 	background-color: #47423F;
 }
 
-GtkWindow.knapsackWindow {
-	background-color: #47423F;
-}
-
 GtkLabel.instruction {
 	font-size: 10px;
 	color: white;
@@ -136,37 +132,6 @@ GtkFileChooserButton.filechooser:hover {
 	font-weight: bold;
 }
 
-/**MOCHILA**/
-GtkButton.boxEntryKnapsack {
-	background: #DF3A01;
-	color: white;
-	border-radius: 0;
-}
-
-GtkButton.boxEntryKnapsack:hover {
-	color: white;
-	font-weight: bold;
-	background: #DBA901;
-}
-
-GtkEntry.entryKnapsack {
-	border-radius: 0;
-	background: #E6E6E6;
-}
-
-GtkButton.buttonKnapsack {
-	border-radius: 0;
-	background: #DF3A01;
-	color: white;
-	border: solid #DF3A01;
-}
-GtkButton.buttonKnapsack:hover {
-	color: white;
-	font-weight: bold;
-}
-
-#rowHeader {
-	background: #B43104;
-	color: white;
+GtkEntry {
 	border-radius: 0;
 }

@@ -6,7 +6,41 @@ FILE * fileTableData;
 char buffer[9];
 char fila[9];
 
+typedef struct  {
+   char name[100];
+   char color[2];
+   int value;	//cuento llevo acumulado de ganancia
+   int cost;	//cuento me utiliza de espacio en la mochila
+   int totalObjects;
+} Objects;
 
+
+
+void setTotalObjectsCount(int totalObjects) {
+	totalObjectsCount = totalObjects;
+}
+
+void getFinalMatrix(Objects finalMatrix[][totalObjectsCount], int knapsackCapacit){
+	char *color[2] = {"R","V"};
+	char *nombres[3] = {"Agua","Calcetines","Galletas"};
+	for (int i = 0; i < knapsackCapacit; ++i)
+	{
+		for (int j = 0; j < totalObjectsCount; ++j)
+		{
+			Objects object;
+			int indexColor = rand() % 2;
+			strcpy( object.name, nombres[j]);
+			strcpy( object.color, color[indexColor]);
+			object.value = rand() % 2;
+			object.cost = rand() % 2;
+			object.totalObjects = rand() % 2;
+			finalMatrix[i][j] = object;
+			printf("Se creo el objeto en la posicion [%d][%d]: nombre: %s, color: %s, valor: %d, costo: %d, cantidad: %d \n", 
+				i,j, object.name, object.color, object.value, object.cost, object.totalObjects);
+		}
+	}
+
+}
 
 /*Read Files*/
 void fillBuffer(int _val) {
@@ -69,11 +103,6 @@ void setMatriz(int matrizD[totalObjectsCount-1][3],char ** headers) {
 	 	flag = 0;
 	 	accion = escaner();
 	}
-	
-
-
-
-	
 }
 
 int countObjectsFiles(char * address){
@@ -93,7 +122,7 @@ int countObjectsFiles(char * address){
 	return totalObjectsCount;
 }
 
-void startFill(int matrizD[][3],char *address,char ** headers){
+void startFill(int matrizD[][3],char *address,char **headers){
 	fileTableData = fopen(address,"r");
 	setMatriz(matrizD,headers);
 }
