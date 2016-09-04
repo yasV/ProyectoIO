@@ -25,6 +25,13 @@ int totalObjects = 0;
 int entry_knapsackCapacity = 0;
 char **header;
 
+
+
+
+
+Objects *objectProblem;
+
+
 int main() {
     GtkBuilder      *builder; 
     /*--- CSS -----------------*/
@@ -186,6 +193,7 @@ void createTableDataFile(int Matriz[totalObjects-1][3]){
 }
 
 void createFinalTable(Objects finalMatrix[entry_knapsackCapacity+1][totalObjects-1],int knapsackCapacity) {
+  printf("CreateFinalTable\n");
   tableData = calloc(knapsackCapacity,sizeof(GtkWidget**));
 
   g_tableData = gtk_grid_new ();
@@ -218,7 +226,9 @@ void createFinalTable(Objects finalMatrix[entry_knapsackCapacity+1][totalObjects
       }
       if (column != 0 && row != 0) {
         Objects object = finalMatrix[row-1][column-1];
-        char setText[50];
+        
+
+        char setText[100000];
         char xValue[10];
         sprintf(value, "%d", object.value);
         sprintf(total, "%d", object.totalObjects);
@@ -229,6 +239,7 @@ void createFinalTable(Objects finalMatrix[entry_knapsackCapacity+1][totalObjects
         strcat(setText, xValue);
         strcat(setText, " = ");
         strcat(setText, total);
+  
         gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),setText);
         if (strcmp(object.color, "R") == 0) {
           gtk_widget_set_name(tableData[row][column],"notGetObject");
@@ -261,6 +272,19 @@ void createFile(char *fileName) {
     fprintf(file_tableData,"\n");
   }
   fclose(file_tableData);
+}
+
+void createObjects(){
+  objectProblem = (int *)malloc (totalObjects-1*sizeof(int));
+  Objects data;
+  for (int row = 1; row < totalObjects;row ++)
+  {
+      data.value = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][1])));
+      data.cost = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][2])));
+      data.totalObjects = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][3])));
+      objectProblem[row-1] = data;
+
+  }
 }
 
 void on_btn_manualEntry_clicked() {
@@ -298,20 +322,27 @@ void on_btn_getTableData_clicked() {
 	char direction[17] = "examples/Mochila/";
 	char extension[4] = ".cvs";
 	int lenName = strlen(gtk_entry_get_text (GTK_ENTRY(g_entry_fileName))) + 21;
-
+  
 	char fileName[lenName]; 
 	strcpy(fileName, direction);
 	strcat(fileName, gtk_entry_get_text (GTK_ENTRY(g_entry_fileName)));
 	strcat(fileName, extension);
 
   entry_knapsackCapacity = atoi(gtk_entry_get_text (GTK_ENTRY(g_entry_knapsackCapacity)));
-	createFile(fileName);
-  setTotalObjectsCount(totalObjects-1);
+	//createFile(fileName);
+  printf("HERE\n");
+  createObjects();
+  setTotalObjectsCount(totalObjects-1,entry_knapsackCapacity+1);
+
 
   Objects finalMatrix[entry_knapsackCapacity+1][totalObjects-1];
-  getFinalMatrix(finalMatrix,entry_knapsackCapacity+1);
-
+  knapsackAlgorithm(finalMatrix,objectProblem);
+  printf("return\n");
+  
+  //getFinalMatrix(finalMatrix,entry_knapsackCapacity+1);
+  
   createFinalTable(finalMatrix,entry_knapsackCapacity+2);
   gtk_widget_hide(windowTableData);
   gtk_widget_show_now(windowFinalTable);
+  
 }

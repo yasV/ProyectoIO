@@ -2,6 +2,7 @@
 #include <math.h>
 
 int totalObjectsCount = 0;
+int Capacity;
 FILE * fileTableData;
 char buffer[9];
 char fila[9];
@@ -16,9 +17,11 @@ typedef struct  {
 
 
 
-void setTotalObjectsCount(int totalObjects) {
+void setTotalObjectsCount(int totalObjects,int knapsackCapacit) {
 	totalObjectsCount = totalObjects;
-}
+	Capacity = knapsackCapacit;
+}	
+
 
 void getFinalMatrix(Objects finalMatrix[][totalObjectsCount], int knapsackCapacit){
 	char *color[2] = {"R","V"};
@@ -125,4 +128,100 @@ int countObjectsFiles(char * address){
 void startFill(int matrizD[][3],char *address,char **headers){
 	fileTableData = fopen(address,"r");
 	setMatriz(matrizD,headers);
+}
+
+void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Objects todos[totalObjectsCount]){
+	printf("%d\n",totalObjectsCount);
+	int matriz[Capacity][totalObjectsCount];
+	for (int i=0;i<Capacity;i++){
+		for (int j=0;j<totalObjectsCount;j++){
+			matriz[i][j] =0;
+		}
+	}
+	Objects zero;
+	zero.cost = 0;
+	zero.value = 0;
+	zero.totalObjects =0;
+
+	for (int i=0;i<Capacity;i++){
+		for (int j=0;j<totalObjectsCount;j++){
+			matrizObjects[i][j] = zero;
+		}
+	}
+
+	
+
+	int con = 0;
+	for (int j=0;j<totalObjectsCount;j++){
+		for (int i=0;i<Capacity;i++){
+			Objects actual = todos[j];
+			Objects guardar;
+			
+
+			if (j==0){
+					if (actual.cost<=i){
+					strcpy (guardar.color,"V");
+					int aux = con +1;
+					if (aux * actual.cost == i && i!=0 && con <= actual.cost){
+						con ++;
+					}
+					
+				}
+				else{
+					strcpy (guardar.color,"R");
+				}
+
+				guardar.value = actual.value * con;
+					guardar.totalObjects = con;
+					
+					matriz[i][j] = con * actual.value;
+					matrizObjects[i][j] = guardar;
+				
+			}
+
+			else
+				{
+				if (actual.cost>i){
+					matriz[i][j] = matriz[i][j-1];
+					guardar = matrizObjects[i][j-1];
+					guardar.totalObjects = 0;
+					strcpy (guardar.color,"R");
+					matrizObjects[i][j] =guardar;
+
+				}
+				else{
+				strcpy (guardar.color,"R");		
+				int optimo = matriz[i][j-1];
+				int candidato = actual.value + matriz[i-actual.cost][j-1];
+				int contador = 1;
+				int cuenta_candidato = 1;
+				int cuenta_optimo = 0;
+				for (contador;contador<=actual.totalObjects;contador++){
+					if (actual.cost * contador <= i){
+						if (candidato< (contador * actual.value + matriz[i-(contador*actual.cost)][j-1])){
+							candidato = contador * actual.value + matriz[i-(contador*actual.cost)][j-1];
+							cuenta_candidato = contador;
+						}
+					}
+					else {
+						break;
+					}
+				}
+
+				if (optimo< candidato){
+					optimo = candidato;
+					cuenta_optimo = cuenta_candidato;
+					strcpy (guardar.color,"V");
+
+				}					
+					guardar.value = optimo;
+					guardar.totalObjects = cuenta_optimo;
+					matriz[i][j] = optimo;
+					matrizObjects[i][j] = guardar;
+
+				}
+			}
+		}
+	}
+	
 }
