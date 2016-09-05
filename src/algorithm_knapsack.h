@@ -2,13 +2,12 @@
 #include <math.h>
 
 int totalObjectsCount = 0;
-int Capacity;
+int Capacity = 0;
 FILE * fileTableData;
 char buffer[9];
 char fila[9];
 
 typedef struct  {
-   char name[100];
    char color[2];
    int value;	//cuento llevo acumulado de ganancia
    int cost;	//cuento me utiliza de espacio en la mochila
@@ -25,21 +24,19 @@ void setTotalObjectsCount(int totalObjects,int knapsackCapacit) {
 
 void getFinalMatrix(Objects finalMatrix[][totalObjectsCount], int knapsackCapacit){
 	char *color[2] = {"R","V"};
-	char *nombres[3] = {"Agua","Calcetines","Galletas"};
 	for (int i = 0; i < knapsackCapacit; ++i)
 	{
 		for (int j = 0; j < totalObjectsCount; ++j)
 		{
 			Objects object;
 			int indexColor = rand() % 2;
-			strcpy( object.name, nombres[j]);
 			strcpy( object.color, color[indexColor]);
 			object.value = rand() % 2;
 			object.cost = rand() % 2;
 			object.totalObjects = rand() % 2;
 			finalMatrix[i][j] = object;
-			printf("Se creo el objeto en la posicion [%d][%d]: nombre: %s, color: %s, valor: %d, costo: %d, cantidad: %d \n", 
-				i,j, object.name, object.color, object.value, object.cost, object.totalObjects);
+			printf("Se creo el objeto en la posicion [%d][%d]: color: %s, valor: %d, costo: %d, cantidad: %d \n", 
+				i,j,  object.color, object.value, object.cost, object.totalObjects);
 		}
 	}
 
@@ -78,6 +75,7 @@ int escaner() {
 		}
 		fillBuffer(ch);
 	}
+	return 0;
 }
 
 void setMatriz(int matrizD[totalObjectsCount-1][3],char ** headers) {
@@ -131,13 +129,9 @@ void startFill(int matrizD[][3],char *address,char **headers){
 }
 
 void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Objects todos[totalObjectsCount]){
-	printf("%d\n",totalObjectsCount);
 	int matriz[Capacity][totalObjectsCount];
-	for (int i=0;i<Capacity;i++){
-		for (int j=0;j<totalObjectsCount;j++){
-			matriz[i][j] =0;
-		}
-	}
+	int con = 0;
+
 	Objects zero;
 	zero.cost = 0;
 	zero.value = 0;
@@ -145,83 +139,122 @@ void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Object
 
 	for (int i=0;i<Capacity;i++){
 		for (int j=0;j<totalObjectsCount;j++){
-			matrizObjects[i][j] = zero;
+			matriz[i][j] =0;
 		}
 	}
 
+	for (int i=0; i < Capacity; i++) {
+		for (int j=0; j< totalObjectsCount; j++) {
+			matrizObjects[i][j] = zero;
+		}
+	}
 	
-
-	int con = 0;
-	for (int j=0;j<totalObjectsCount;j++){
+	for (int j=0; j<totalObjectsCount; j++){
 		for (int i=0;i<Capacity;i++){
 			Objects actual = todos[j];
 			Objects guardar;
 			
-
-			if (j==0){
-					if (actual.cost<=i){
+			if (j==0) {
+				if (actual.cost<=i) {
 					strcpy (guardar.color,"V");
 					int aux = con +1;
 					if (aux * actual.cost == i && i!=0 && con <= actual.cost){
 						con ++;
-					}
-					
+					}	
 				}
-				else{
+				else{ 
 					strcpy (guardar.color,"R");
 				}
 
 				guardar.value = actual.value * con;
-					guardar.totalObjects = con;
+				guardar.totalObjects = con;
 					
-					matriz[i][j] = con * actual.value;
-					matrizObjects[i][j] = guardar;
-				
+				matriz[i][j] = con * actual.value;
+				matrizObjects[i][j] = guardar;
 			}
 
-			else
-				{
-				if (actual.cost>i){
+			else {
+				if (actual.cost > i) {
 					matriz[i][j] = matriz[i][j-1];
 					guardar = matrizObjects[i][j-1];
 					guardar.totalObjects = 0;
 					strcpy (guardar.color,"R");
 					matrizObjects[i][j] =guardar;
-
 				}
-				else{
-				strcpy (guardar.color,"R");		
-				int optimo = matriz[i][j-1];
-				int candidato = actual.value + matriz[i-actual.cost][j-1];
-				int contador = 1;
-				int cuenta_candidato = 1;
-				int cuenta_optimo = 0;
-				for (contador;contador<=actual.totalObjects;contador++){
-					if (actual.cost * contador <= i){
-						if (candidato< (contador * actual.value + matriz[i-(contador*actual.cost)][j-1])){
-							candidato = contador * actual.value + matriz[i-(contador*actual.cost)][j-1];
-							cuenta_candidato = contador;
+				else {
+					strcpy (guardar.color,"R");		
+					int optimo = matriz[i][j-1];
+					int candidato = actual.value + matriz[i-actual.cost][j-1];
+					int cuenta_candidato = 1;
+					int cuenta_optimo = 0;  
+
+					for ( int contador = 1; contador <= actual.totalObjects; contador++) {
+						if (actual.cost * contador <= i) {
+							if (candidato < (contador * actual.value + matriz[i-(contador*actual.cost)][j-1]) ) {
+								candidato = contador * actual.value + matriz[i-(contador*actual.cost)][j-1];
+								cuenta_candidato = contador;
+							}
+						}
+						else {
+							break;
 						}
 					}
-					else {
-						break;
-					}
-				}
 
-				if (optimo< candidato){
-					optimo = candidato;
-					cuenta_optimo = cuenta_candidato;
-					strcpy (guardar.color,"V");
-
-				}					
+					if (optimo < candidato) {
+						optimo = candidato;
+						cuenta_optimo = cuenta_candidato;
+						strcpy (guardar.color,"V");
+					}					
+						
 					guardar.value = optimo;
 					guardar.totalObjects = cuenta_optimo;
 					matriz[i][j] = optimo;
 					matrizObjects[i][j] = guardar;
-
 				}
 			}
 		}
 	}
-	
+}
+
+void getOptimalSolution(int *optimalSolution, Objects matrizObjects[Capacity][totalObjectsCount]) {
+	printf("entro en getOptimalSolution\n");
+	printf("getOptimalSolution objetos: %d , capacidad: %d \n",totalObjectsCount, Capacity);
+	for (int i = 0; i < Capacity; ++i)
+	{
+		for (int j = 0; j < totalObjectsCount; ++j)
+		{
+			Objects object = matrizObjects[i][j];
+			printf("Se creo el objeto en la posicion [%d][%d]: color: %s, valor: %d, costo: %d, cantidad: %d \n", 
+				i,j,  object.color, object.value, object.cost, object.totalObjects);
+		}
+	}
+
+	int row = Capacity-1;
+	int column = totalObjectsCount-1;
+
+	Objects object = matrizObjects[row][column];
+	optimalSolution[0] = object.value; //Solucion optima
+
+	for (int i = totalObjectsCount; i > 0; --i)
+	{	
+		printf("Se obtuvo el objeto en la posicion [%d][%d]: color: %s, valor: %d, costo: %d, cantidad: %d \n", 
+				row,column,  object.color, object.value, object.cost, object.totalObjects);
+		
+		optimalSolution[i] = object.totalObjects;
+
+		if (strcmp(object.color, "R") == 0) {
+			column--;
+		}
+		else {
+			column--;
+			row = row - object.cost;
+		}
+		object = matrizObjects[row][column];
+	}
+
+	for (int j = 0; j < totalObjectsCount+1; ++j)
+		{
+			printf("Se creo el objeto en la posicion [%d]: valor: %d \n", 
+				j, optimalSolution[j] );
+		}
 }

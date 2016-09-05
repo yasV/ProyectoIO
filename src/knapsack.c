@@ -8,7 +8,9 @@ GtkWidget       *windowInitialKnapsack;
 GtkWidget 			*windowTableData;
 GtkWidget       *windowFinalTable;
 GtkWidget       ***tableData;
+GtkWidget       ***tableFinalData;
 GtkWidget 			*g_tableData;
+GtkWidget       *g_tableFinalData;
 GtkWidget       *g_frame_manualEntry;
 GtkWidget       *g_frame_fileEntry;
 GtkWidget       *g_filechooser_btn;
@@ -17,6 +19,7 @@ GtkWidget 			*g_entry_totalObjects;
 GtkWidget 			*g_entry_fileName;
 GtkWidget 			*g_scrolledwindow_initialTableData;
 GtkWidget       *g_scrolledwindow_finalTable;
+GtkWidget       *g_scrolledwindow_optimalSolution;
 FILE 						*file_tableData;
 
 const char *alphabet[27]={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -57,6 +60,8 @@ int main() {
 
     g_scrolledwindow_initialTableData = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_initialTableData"));
     g_scrolledwindow_finalTable = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_finalTable"));
+    g_scrolledwindow_optimalSolution = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_optimalSolution"));
+    
 
     g_frame_fileEntry = GTK_WIDGET(gtk_builder_get_object(builder, "frame_fileEntry"));
     gtk_widget_hide(g_frame_fileEntry);
@@ -101,19 +106,17 @@ int main() {
 }
 
 void on_window_initial_knapsack_destroy() {
-  free(tableData);
-  free(header);
 	gtk_main_quit();
 }
 
 void on_window_tableData_destroy() {
   free(tableData);
-  free(header);
 	gtk_main_quit();
 }
 
 void on_window_finalTable_destroy() {
   free(tableData);
+  free(tableFinalData);
   free(header);
   gtk_main_quit();
 }
@@ -135,7 +138,6 @@ void createTableData() {
     {
       tableData[row][column] = gtk_entry_new();
       gtk_entry_set_width_chars(GTK_ENTRY(tableData[row][column]),10);
-      //gtk_widget_set_sensitive(entradaP[row][column],FALSE);
       gtk_grid_attach (GTK_GRID (g_tableData),tableData[row][column] , column, row, 1, 1);
       if (row == 0 && column != 0){
         gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),rowHeader[column]);
@@ -144,6 +146,9 @@ void createTableData() {
       }
       if (column ==0 && row!=0){
         gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),alphabet[row-1]);
+      }
+      if (column ==3 && row!=0){
+        gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),"INF");
       }
     }
   }
@@ -193,14 +198,13 @@ void createTableDataFile(int Matriz[totalObjects-1][3]){
 }
 
 void createFinalTable(Objects finalMatrix[entry_knapsackCapacity+1][totalObjects-1],int knapsackCapacity) {
-  printf("CreateFinalTable\n");
-  tableData = calloc(knapsackCapacity,sizeof(GtkWidget**));
+  tableFinalData = calloc(knapsackCapacity,sizeof(GtkWidget**));
 
-  g_tableData = gtk_grid_new ();
-  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_finalTable), g_tableData);
+  g_tableFinalData = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_finalTable), g_tableFinalData);
 
   for(int j = 0; j < knapsackCapacity; j++) {
-    tableData[j] = calloc(totalObjects,sizeof(GtkWidget*));
+    tableFinalData[j] = calloc(totalObjects,sizeof(GtkWidget*));
   }
 
   for(int row =0; row < knapsackCapacity; row++) 
@@ -211,18 +215,18 @@ void createFinalTable(Objects finalMatrix[entry_knapsackCapacity+1][totalObjects
       char value[10];
       char total[10];
 
-      tableData[row][column] = gtk_entry_new();
-      gtk_entry_set_width_chars(GTK_ENTRY(tableData[row][column]),10);
-      gtk_widget_set_sensitive(tableData[row][column],FALSE);
-      gtk_grid_attach (GTK_GRID (g_tableData),tableData[row][column] , column, row, 1, 1);
+      tableFinalData[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(tableFinalData[row][column]),10);
+      gtk_widget_set_sensitive(tableFinalData[row][column],FALSE);
+      gtk_grid_attach (GTK_GRID (g_tableFinalData),tableFinalData[row][column] , column, row, 1, 1);
       if (row == 0 && column != 0){
-        gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),header[column]);
-        gtk_widget_set_name(tableData[row][column],"rowHeader");
+        gtk_entry_set_text (GTK_ENTRY(tableFinalData[row][column]),header[column]);
+        gtk_widget_set_name(tableFinalData[row][column],"rowHeader");
       }
       if (column ==0 && row!=0){
         sprintf(rowStr, "%d", row-1);
-        gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),rowStr);
-        gtk_widget_set_name(tableData[row][column],"rowHeader");
+        gtk_entry_set_text (GTK_ENTRY(tableFinalData[row][column]),rowStr);
+        gtk_widget_set_name(tableFinalData[row][column],"rowHeader");
       }
       if (column != 0 && row != 0) {
         Objects object = finalMatrix[row-1][column-1];
@@ -240,21 +244,43 @@ void createFinalTable(Objects finalMatrix[entry_knapsackCapacity+1][totalObjects
         strcat(setText, " = ");
         strcat(setText, total);
   
-        gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),setText);
+        gtk_entry_set_text (GTK_ENTRY(tableFinalData[row][column]),setText);
         if (strcmp(object.color, "R") == 0) {
-          gtk_widget_set_name(tableData[row][column],"notGetObject");
+          gtk_widget_set_name(tableFinalData[row][column],"notGetObject");
         }
         else {
-          gtk_widget_set_name(tableData[row][column],"getObject");
+          gtk_widget_set_name(tableFinalData[row][column],"getObject");
         }
       }
     }
   }
-  gtk_widget_set_sensitive(tableData[0][0],FALSE);
-  gtk_widget_set_name(tableData[0][0],"rowHeader");
+  gtk_widget_set_sensitive(tableFinalData[0][0],FALSE);
+  gtk_widget_set_name(tableFinalData[0][0],"rowHeader");
   gtk_widget_show_all(windowFinalTable);
 }
 
+void createOptimalSolutionLabel(int optimalSolution[totalObjects]) {
+  char setText[100000];
+  char xvalue[5];
+  char arrayValue[5];
+
+  strcpy(setText, "Z = ");
+  sprintf(arrayValue, "%d", optimalSolution[0]);
+  strcat(setText,arrayValue);
+  for (int i = 1; i < totalObjects; ++i)
+  {
+    sprintf(arrayValue, "%d", optimalSolution[i]);
+    sprintf(xvalue, "%d", i);
+    strcat(setText, "  X" );
+    strcat(setText,xvalue);
+    strcat(setText, " = " );
+    strcat(setText,arrayValue);
+  }
+  GtkWidget *labelOptimal = gtk_label_new(" ");
+  gtk_label_set_text(GTK_LABEL(labelOptimal),setText);
+  gtk_widget_set_name(labelOptimal,"newLabel");
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_optimalSolution), labelOptimal);
+}
 
 void createFile(char *fileName) {
   file_tableData = fopen(fileName,"w+");
@@ -275,15 +301,19 @@ void createFile(char *fileName) {
 }
 
 void createObjects(){
-  objectProblem = (int *)malloc (totalObjects-1*sizeof(int));
+  objectProblem = malloc (totalObjects-1*sizeof(int));
   Objects data;
   for (int row = 1; row < totalObjects;row ++)
   {
-      data.value = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][1])));
-      data.cost = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][2])));
+    data.value = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][1])));
+    data.cost = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][2])));
+    if (strcmp(gtk_entry_get_text(GTK_ENTRY(tableData[row][3])),"INF") == 0) {
+      data.totalObjects = 1000000;
+    }
+    else {
       data.totalObjects = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][3])));
-      objectProblem[row-1] = data;
-
+    }
+    objectProblem[row-1] = data;
   }
 }
 
@@ -299,7 +329,7 @@ void on_btn_fileEntry_clicked() {
 
 void on_btn_getEntries_clicked() {
 	int entry_totalObjects = atoi(gtk_entry_get_text (GTK_ENTRY(g_entry_totalObjects)));
-	
+	printf("Entrada Manual\n");
 	totalObjects = entry_totalObjects + 1;
 	createTableData();
 	gtk_widget_hide(windowInitialKnapsack);
@@ -312,7 +342,7 @@ void on_btn_getFile_clicked() {
 
 	int matrixData[totalObjects-1][3];
 	startFill(matrixData,gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)),header);
-
+  printf("Entrada Archivo\n");
   createTableDataFile(matrixData);
   gtk_widget_hide(windowInitialKnapsack);
   gtk_widget_show_now(windowTableData);
@@ -329,16 +359,17 @@ void on_btn_getTableData_clicked() {
 	strcat(fileName, extension);
 
   entry_knapsackCapacity = atoi(gtk_entry_get_text (GTK_ENTRY(g_entry_knapsackCapacity)));
-	//createFile(fileName);
-  printf("HERE\n");
+	createFile(fileName);
   createObjects();
   setTotalObjectsCount(totalObjects-1,entry_knapsackCapacity+1);
 
 
   Objects finalMatrix[entry_knapsackCapacity+1][totalObjects-1];
   knapsackAlgorithm(finalMatrix,objectProblem);
-  printf("return\n");
   
+  int optimalSolution[totalObjects];
+  getOptimalSolution(optimalSolution,finalMatrix);
+  createOptimalSolutionLabel(optimalSolution);
   //getFinalMatrix(finalMatrix,entry_knapsackCapacity+1);
   
   createFinalTable(finalMatrix,entry_knapsackCapacity+2);

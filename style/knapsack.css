@@ -55,3 +55,9 @@ GtkEntry {
 	background: #E11B1B;
 	color: black;
 }
+
+#newLabel {
+	font-size: 13px;
+	color: white;
+	font-weight: bold;
+}
