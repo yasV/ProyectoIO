@@ -20,6 +20,8 @@ GtkWidget 			*g_entry_fileName;
 GtkWidget 			*g_scrolledwindow_initialTableData;
 GtkWidget       *g_scrolledwindow_finalTable;
 GtkWidget       *g_scrolledwindow_optimalSolution;
+GtkWidget       *g_scrolledwindow_itemValue;
+GtkWidget       *g_scrolledwindow_itemCost;
 FILE 						*file_tableData;
 
 const char *alphabet[27]={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -61,6 +63,8 @@ int main() {
     g_scrolledwindow_initialTableData = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_initialTableData"));
     g_scrolledwindow_finalTable = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_finalTable"));
     g_scrolledwindow_optimalSolution = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_optimalSolution"));
+    g_scrolledwindow_itemValue = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_itemValue"));
+    g_scrolledwindow_itemCost = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_itemCost"));
     
 
     g_frame_fileEntry = GTK_WIDGET(gtk_builder_get_object(builder, "frame_fileEntry"));
@@ -115,9 +119,7 @@ void on_window_tableData_destroy() {
 }
 
 void on_window_finalTable_destroy() {
-  free(tableData);
   free(tableFinalData);
-  free(header);
   gtk_main_quit();
 }
 
@@ -261,25 +263,68 @@ void createFinalTable(Objects finalMatrix[entry_knapsackCapacity+1][totalObjects
 
 void createOptimalSolutionLabel(int optimalSolution[totalObjects]) {
   char setText[100000];
+  char setCost[100000];
+  char setValue[100000];
   char xvalue[5];
   char arrayValue[5];
+  char arrayCost[5];
+  char arrayText[5];
+  char knapValue[5];
 
   strcpy(setText, "Z = ");
-  sprintf(arrayValue, "%d", optimalSolution[0]);
-  strcat(setText,arrayValue);
+  sprintf(arrayText, "%d", optimalSolution[0]);
+  strcat(setText,arrayText);
+
+  strcpy(setValue, "Z = ");
+  strcpy(setCost, " ");
+
   for (int i = 1; i < totalObjects; ++i)
   {
-    sprintf(arrayValue, "%d", optimalSolution[i]);
+    Objects object = objectProblem[i-1];
+
+    //Solucion Optima
+    sprintf(arrayText, "%d", optimalSolution[i]);
     sprintf(xvalue, "%d", i);
     strcat(setText, "  X" );
     strcat(setText,xvalue);
     strcat(setText, " = " );
-    strcat(setText,arrayValue);
+    strcat(setText,arrayText);
+
+    //Maximizar
+    sprintf(arrayValue, "%d", object.value);
+    sprintf(xvalue, "%d", i);
+    strcat(setValue,arrayValue);
+    strcat(setValue, "  X" );
+    strcat(setValue,xvalue);
+    strcat(setValue, " + " );
+    
+    //Sujeto a
+    sprintf(arrayCost, "%d", object.cost);
+    sprintf(xvalue, "%d", i);
+    strcat(setCost,arrayCost);
+    strcat(setCost, "  X" );
+    strcat(setCost,xvalue);
+    strcat(setCost, " + " );
   }
+
+  strcat(setCost, "  <= " );
+  sprintf(knapValue, "%d", entry_knapsackCapacity);
+  strcat(setCost, knapValue);
+
   GtkWidget *labelOptimal = gtk_label_new(" ");
   gtk_label_set_text(GTK_LABEL(labelOptimal),setText);
   gtk_widget_set_name(labelOptimal,"newLabel");
   gtk_container_add (GTK_CONTAINER (g_scrolledwindow_optimalSolution), labelOptimal);
+
+  GtkWidget *labelCost = gtk_label_new(" ");
+  gtk_label_set_text(GTK_LABEL(labelCost),setCost);
+  gtk_widget_set_name(labelCost,"newLabel");
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_itemCost), labelCost);
+
+  GtkWidget *labelValue = gtk_label_new(" ");
+  gtk_label_set_text(GTK_LABEL(labelValue),setValue);
+  gtk_widget_set_name(labelValue,"newLabel");
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_itemValue), labelValue);
 }
 
 void createFile(char *fileName) {
@@ -349,16 +394,15 @@ void on_btn_getFile_clicked() {
 }
 
 void on_btn_getTableData_clicked() {
-	char direction[17] = "examples/Mochila/";
-	char extension[4] = ".cvs";
 	int lenName = strlen(gtk_entry_get_text (GTK_ENTRY(g_entry_fileName))) + 21;
   
 	char fileName[lenName]; 
-	strcpy(fileName, direction);
+	strcpy(fileName, "examples/Mochila/");
 	strcat(fileName, gtk_entry_get_text (GTK_ENTRY(g_entry_fileName)));
-	strcat(fileName, extension);
+	strcat(fileName, ".cvs");
 
   entry_knapsackCapacity = atoi(gtk_entry_get_text (GTK_ENTRY(g_entry_knapsackCapacity)));
+  printf("%s\n", fileName );
 	createFile(fileName);
   createObjects();
   setTotalObjectsCount(totalObjects-1,entry_knapsackCapacity+1);

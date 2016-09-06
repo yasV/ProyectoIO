@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkWindow" id="window_finalTable">
     <property name="width_request">650</property>
-    <property name="height_request">570</property>
+    <property name="height_request">770</property>
     <property name="can_focus">False</property>
     <signal name="destroy" handler="on_window_finalTable_destroy" swapped="no"/>
     <child>
@@ -14,7 +14,7 @@
         <child>
           <object class="GtkFrame" id="frame4">
             <property name="width_request">600</property>
-            <property name="height_request">400</property>
+            <property name="height_request">423</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
@@ -59,8 +59,8 @@
             </child>
           </object>
           <packing>
-            <property name="x">33</property>
-            <property name="y">40</property>
+            <property name="x">28</property>
+            <property name="y">222</property>
           </packing>
         </child>
         <child>
@@ -93,12 +93,99 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Solución Óptima</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
               </object>
             </child>
           </object>
           <packing>
-            <property name="x">26</property>
-            <property name="y">482</property>
+            <property name="x">21</property>
+            <property name="y">661</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame6">
+            <property name="width_request">600</property>
+            <property name="height_request">59</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment8">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow_itemValue">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="Maximizar">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Maximizar</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">33</property>
+            <property name="y">29</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame7">
+            <property name="width_request">600</property>
+            <property name="height_request">60</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="resize_mode">immediate</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow_itemCost">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label7">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Sujeto a</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">30</property>
+            <property name="y">116</property>
           </packing>
         </child>
       </object>
