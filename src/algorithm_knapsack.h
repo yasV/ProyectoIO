@@ -128,8 +128,24 @@ void startFill(int matrizD[][3],char *address,char **headers){
 	setMatriz(matrizD,headers);
 }
 
+void suelo(Objects todos[totalObjectsCount]){
+	for (int i=0;i<totalObjectsCount;i++){
+		Objects objetos;
+		objetos = todos[i];
+		if (objetos.totalObjects>1){
+			int suelo = objetos.cost / (Capacity-1);
+			objetos.totalObjects = suelo;
+		}
+		
+
+	}
+
+}
+
 void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Objects todos[totalObjectsCount]){
 	int matriz[Capacity][totalObjectsCount];
+	suelo (todos);
+
 	int con = 0;
 
 	Objects zero;
@@ -153,14 +169,23 @@ void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Object
 		for (int i=0;i<Capacity;i++){
 			Objects actual = todos[j];
 			Objects guardar;
+			guardar.cost = 0;
+			guardar.value = 0;
+			guardar.totalObjects =0;
+
 			
 			if (j==0) {
 				if (actual.cost<=i) {
 					strcpy (guardar.color,"V");
 					int aux = con +1;
+					if (actual.totalObjects==1){
+						con =1;
+					}
+					else{
 					if (aux * actual.cost == i && i!=0 && con <= actual.cost){
 						con ++;
-					}	
+
+					}	}
 				}
 				else{ 
 					strcpy (guardar.color,"R");
@@ -168,6 +193,7 @@ void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Object
 
 				guardar.value = actual.value * con;
 				guardar.totalObjects = con;
+				guardar.cost = actual.cost * con;
 					
 				matriz[i][j] = con * actual.value;
 				matrizObjects[i][j] = guardar;
@@ -175,13 +201,14 @@ void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Object
 
 			else {
 				if (actual.cost > i) {
-					matriz[i][j] = matriz[i][j-1];
 					guardar = matrizObjects[i][j-1];
 					guardar.totalObjects = 0;
 					strcpy (guardar.color,"R");
 					matrizObjects[i][j] =guardar;
+
 				}
 				else {
+					guardar.cost = matrizObjects[i][j-1].cost;
 					strcpy (guardar.color,"R");		
 					int optimo = matriz[i][j-1];
 					int candidato = actual.value + matriz[i-actual.cost][j-1];
@@ -203,6 +230,7 @@ void knapsackAlgorithm(Objects matrizObjects[Capacity][totalObjectsCount],Object
 					if (optimo < candidato) {
 						optimo = candidato;
 						cuenta_optimo = cuenta_candidato;
+						guardar.cost = actual.cost * cuenta_optimo;
 						strcpy (guardar.color,"V");
 					}					
 						
@@ -258,3 +286,4 @@ void getOptimalSolution(int *optimalSolution, Objects matrizObjects[Capacity][to
 				j, optimalSolution[j] );
 		}
 }
+
