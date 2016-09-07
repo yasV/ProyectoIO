@@ -397,17 +397,15 @@ void on_btn_getTableData_clicked() {
 	int lenName = strlen(gtk_entry_get_text (GTK_ENTRY(g_entry_fileName))) + 21;
   
 	char fileName[lenName]; 
-	strcpy(fileName, "examples/Mochila/");
+  strcpy(fileName,"examples/Mochila/");
 	strcat(fileName, gtk_entry_get_text (GTK_ENTRY(g_entry_fileName)));
-	strcat(fileName, ".cvs");
+  strcat(fileName, ".cvs");
+  printf("%d\n",fileName);
 
   entry_knapsackCapacity = atoi(gtk_entry_get_text (GTK_ENTRY(g_entry_knapsackCapacity)));
-  printf("%s\n", fileName );
 	createFile(fileName);
   createObjects();
   setTotalObjectsCount(totalObjects-1,entry_knapsackCapacity+1);
-
-
   Objects finalMatrix[entry_knapsackCapacity+1][totalObjects-1];
   knapsackAlgorithm(finalMatrix,objectProblem);
   
