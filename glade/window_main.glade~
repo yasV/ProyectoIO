@@ -84,7 +84,7 @@
             <property name="tooltip_markup" translatable="yes">Problema de optimización combinatioria que busca aumentar la ganancia</property>
             <property name="opacity">0.87058823529411766</property>
             <property name="xalign">0.49000000953674316</property>
-            <signal name="clicked" handler="on_display_pending" swapped="no"/>
+            <signal name="clicked" handler="on_btn_knapsack_clicked" swapped="no"/>
             <style>
               <class name="menu"/>
             </style>
@@ -103,7 +103,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_markup" translatable="yes">Determina la edad económica de un equipo</property>
-            <signal name="clicked" handler="on_display_pending" swapped="no"/>
+            <signal name="clicked" handler="on_btn_equipmentReplace_clicked" swapped="no"/>
             <style>
               <class name="menu"/>
             </style>

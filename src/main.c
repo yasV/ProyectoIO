@@ -42,18 +42,21 @@ int main(int argc, char *argv[]) {
 }
  
 void on_exit_clicked() {
-    gtk_main_quit();
+  gtk_main_quit();
 }
 
 void on_display_floyd() {
-    system("./floyd &"); 
+  system("./floyd &"); 
 }
 
 void on_btn_knapsack_clicked() {
-    system("./knapsack &");
+  system("./knapsack &");
 }
 
 void on_display_pending() {
-    system("./pending &"); 
+  system("./pending &"); 
 }
 
+void on_btn_equipmentReplace_clicked() {
+  system("./reemplazoEquipos &"); 
+}
