@@ -223,9 +223,20 @@ void createFinalTableData(int timeLimit,FinalTable finalData[timeLimit+1]) {
       gtk_entry_set_text (GTK_ENTRY(tableData[row][1]), gt);
       gtk_widget_set_name(tableData[row][1],"allEntries");
         
-      sprintf(prox, "%d", data.min_year);
+      
+      for (int i=0;i<data.position;i++){
+        char aux[3];
+        sprintf(aux, "%d", data.year[i]);
+        strcat(prox,aux);
+        if (i<data.position-1){
+          strcat(prox,",");
+        }
+
+      }
+      
       gtk_entry_set_text (GTK_ENTRY(tableData[row][2]),prox);
       gtk_widget_set_name(tableData[row][2],"allEntries");
+      memset(prox,'\0',strlen(prox));
     }
   }
   gtk_widget_show_all(windowFinalTable);
@@ -304,6 +315,7 @@ void on_btn_getTableData_clicked() {
   replaceAlgorithm(initialData,finalData);
   free(initialData);
   createFinalTableData(timeLimit,finalData);
+  planes(finalData);
 
   gtk_widget_hide(windowTableData);
   gtk_widget_show_now(windowFinalTable);
