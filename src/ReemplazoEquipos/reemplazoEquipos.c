@@ -281,34 +281,30 @@ void createObjects() {
 }
 
 void createOptimalSolution(plans planesPosibles[300]) {
-    for (int i =0;i<cont_plans;i++){
+  char text[1000];
+  char number[3];
+  strcpy(text, " ");
+  for (int i =0;i<cont_plans;i++){
     plans aux = planesPosibles[i];
-    if (repeat(planesPosibles,i) ==0){
-      for (int x = 0;x<=aux.position;x++){
-      printf("%d",aux.year[x]);
-      if (x<aux.position){
-        printf("-");
+    if (repeat(planesPosibles,i) ==0) {
+      for (int x = 0;x<=aux.position;x++) {
+        sprintf(number, "%d", aux.year[x]);
+        strcat(text,number);
+        if (x<aux.position){
+          strcat(text,"   ->   ");
+        }
+        else{
+          strcat(text," \n");
+        }
       }
-      else{
-        printf("\n");
-      }
-    }
-    
     }
   }
-    
-    
-  
-
-
-  /*
-  GtkWidget *g_lblSolution = gtk_label_new (" ");
+  GtkWidget *g_lblSolution = gtk_label_new (text);
   gtk_container_add (GTK_CONTAINER (g_scrolledwindow_optimalSolution), g_lblSolution);
-
   gtk_widget_set_name(g_lblSolution,"label");
 
   gtk_widget_show_all(windowFinalTable);
-  */
+  memset(text,'\0',strlen(text));
 }
 void on_btn_manualEntry_clicked() {
   gtk_widget_hide(g_frame_fileEntry);
@@ -358,7 +354,6 @@ void on_btn_getTableData_clicked() {
   createFinalTableData(timeLimit,finalData);
   planes(finalData,planesPosibles,cont_plans);
   cont_plans =returnContador();
-  printf("%d\n",cont_plans);
   createOptimalSolution(planesPosibles);
 
   gtk_widget_hide(windowTableData);

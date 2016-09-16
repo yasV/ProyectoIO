@@ -125,18 +125,15 @@ void startFill(int matrizD[][2],char *address) {
 
 
 void mostrar_respuesta(FinalTable finalData[timeLimit+1],plans planesPosibles[300],int cont_plans){
-	 int stop = 0;
-	 int contador = 0;
+	int stop = 0;
+	int contador = 0;
 	 
-	 plans planes;
-	 planes.position = 0;
-	 planes.year[0] = 0;
+	plans planes;
+	planes.position = 0;
+	planes.year[0] = 0;
 
-
-
-	 FinalTable answer = finalData[contador];
-	 while(stop==0){
-	 	
+	FinalTable answer = finalData[contador];
+	while(stop==0){ 	
 	 	if (answer.position==0){
 	 		stop = 1;
 	 	}
@@ -146,17 +143,11 @@ void mostrar_respuesta(FinalTable finalData[timeLimit+1],plans planesPosibles[30
 	 		
 	 		answer = finalData[answer.year[answer.position-1]];
 	 	}
-	 }
-	 		planesPosibles[contado_x] = planes;
-	 		cont_plans ++;
-	 		contado_x ++;
-
-	 		
-
-
+	}
+	planesPosibles[contado_x] = planes;
+	cont_plans ++;
+	contado_x ++;
 }
-
-
 
 int returnContador (){
 	return contado_x;
@@ -164,21 +155,19 @@ int returnContador (){
 
 void planes(FinalTable G[timeLimit+1],plans planesPosibles[300],int cont_plans){
 	for (int i=0;i<=timeLimit;i++){
-			if (G[i].position > 1){
-				for (int x = G[i].position;x>=1;x--){
-				 	mostrar_respuesta(G,planesPosibles, cont_plans);
-				 	G[i].position = G[i].position - 1;
+		if (G[i].position > 1){
+			for (int x = G[i].position;x>=1;x--){
+				mostrar_respuesta(G,planesPosibles, cont_plans);
+				G[i].position = G[i].position - 1;
 
-				 	if (G[i].position == 0){
-				 		G[i].position = 1;
-				 	}
-				
+				if (G[i].position == 0){
+				 	G[i].position = 1;
 				}
-
+			
 			}
-}
+		}
+	}
 	cont_plans = contado_x;
-	
 }
 
 
@@ -192,7 +181,6 @@ int repeat (plans planesPosibles[300],int indice){
 					if (planesPosibles[indice].year[x] == planesPosibles[i].year[x]){
 						result = 1;
 						coincidencia ++;
-
 					}
 					else{
 						result = 0;
@@ -203,8 +191,6 @@ int repeat (plans planesPosibles[300],int indice){
 		}
 	}
 
-	printf("%d-%d\n", coincidencia,planesPosibles[indice].position);
-
 	if (result == 1 && coincidencia==planesPosibles[indice].position+1){
 		return 1;
 	}
@@ -212,11 +198,6 @@ int repeat (plans planesPosibles[300],int indice){
 		return 0;
 	}
 }
-
-
-
-
-
 
 void replaceAlgorithm(InitialTable initialData[totalUsefulLife], FinalTable finalData[timeLimit+1]) {
 
