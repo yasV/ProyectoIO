@@ -23,6 +23,11 @@ FILE            *file_tableData;
 const char *rowHeaderInitialTable[3] = {"Año","Precio de Reventa","Mantenimiento"};
 const char *rowHeaderFinalTable[4] = {"t","G(t)","Próximo","Ganancia"};
 int usefulLife = 0;
+
+
+plans planesPosibles[100];
+int cont_plans = 0;
+
 InitialTable *initialData;
 
 int main(int argc, char *argv[]) {
@@ -275,13 +280,35 @@ void createObjects() {
   }
 }
 
-void createOptimalSolution() {
+void createOptimalSolution(plans planesPosibles[300]) {
+    for (int i =0;i<cont_plans;i++){
+    plans aux = planesPosibles[i];
+    if (repeat(planesPosibles,i) ==0){
+      for (int x = 0;x<=aux.position;x++){
+      printf("%d",aux.year[x]);
+      if (x<aux.position){
+        printf("-");
+      }
+      else{
+        printf("\n");
+      }
+    }
+    
+    }
+  }
+    
+    
+  
+
+
+  /*
   GtkWidget *g_lblSolution = gtk_label_new (" ");
   gtk_container_add (GTK_CONTAINER (g_scrolledwindow_optimalSolution), g_lblSolution);
 
   gtk_widget_set_name(g_lblSolution,"label");
 
   gtk_widget_show_all(windowFinalTable);
+  */
 }
 void on_btn_manualEntry_clicked() {
   gtk_widget_hide(g_frame_fileEntry);
@@ -329,8 +356,10 @@ void on_btn_getTableData_clicked() {
   replaceAlgorithm(initialData,finalData);
   free(initialData);
   createFinalTableData(timeLimit,finalData);
-  planes(finalData);
-  createOptimalSolution();
+  planes(finalData,planesPosibles,cont_plans);
+  cont_plans =returnContador();
+  printf("%d\n",cont_plans);
+  createOptimalSolution(planesPosibles);
 
   gtk_widget_hide(windowTableData);
   gtk_widget_show_now(windowFinalTable);

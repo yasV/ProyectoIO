@@ -8,6 +8,8 @@ int timeLimit = 0;
 char buffer[9];
 char row[9];
 
+int contado_x;
+
 FILE * fileTableData;
 
 typedef struct  {
@@ -28,6 +30,12 @@ typedef struct  {
   int sale;
   int maintenance;
 } InitialTable;
+
+typedef struct 
+{
+	int year[30];
+	int position;
+} plans;
 
 void setTotalObjectsCount(int pTotalUsefulLife,int pInitialCost, int pTimeLimit) {
 	totalUsefulLife = pTotalUsefulLife;
@@ -116,43 +124,97 @@ void startFill(int matrizD[][2],char *address) {
 }
 
 
-void mostrar_respuesta(FinalTable finalData[timeLimit+1]){
+void mostrar_respuesta(FinalTable finalData[timeLimit+1],plans planesPosibles[300],int cont_plans){
 	 int stop = 0;
 	 int contador = 0;
-	 FinalTable answer = finalData[contador];
-	 printf("%d",0);
+	 
+	 plans planes;
+	 planes.position = 0;
+	 planes.year[0] = 0;
 
+
+
+	 FinalTable answer = finalData[contador];
 	 while(stop==0){
+	 	
 	 	if (answer.position==0){
 	 		stop = 1;
 	 	}
 	 	else{
-	 		printf("-%d",answer.year[answer.position-1]);
+	 		planes.position = planes.position +1;
+	 		planes.year[planes.position] = answer.year[answer.position-1]; 
+	 		
 	 		answer = finalData[answer.year[answer.position-1]];
 	 	}
 	 }
-	 printf("______________________________________\n");
+	 		planesPosibles[contado_x] = planes;
+	 		cont_plans ++;
+	 		contado_x ++;
+
+	 		
+
 
 }
 
-void planes(FinalTable finalData[timeLimit+1]){
+
+
+int returnContador (){
+	return contado_x;
+}
+
+void planes(FinalTable G[timeLimit+1],plans planesPosibles[300],int cont_plans){
+	for (int i=0;i<=timeLimit;i++){
+			if (G[i].position > 1){
+				for (int x = G[i].position;x>=1;x--){
+				 	mostrar_respuesta(G,planesPosibles, cont_plans);
+				 	G[i].position = G[i].position - 1;
+
+				 	if (G[i].position == 0){
+				 		G[i].position = 1;
+				 	}
+				
+				}
+
+			}
+}
+	cont_plans = contado_x;
 	
-		for (int i=0;i<=timeLimit;i++){
-			if (finalData[i].position > 1){
-			for (int x = finalData[i].position;x>=1;x--){
-				printf("%d\n",x );
-				 mostrar_respuesta(finalData);
-				 finalData[i].position = finalData[i].position-1;
-			
-			if (finalData[i].position==0){
-				finalData[i].position=1;
-				x = 0;
-			
-			}	
+}
+
+
+int repeat (plans planesPosibles[300],int indice){
+	int result = 0;
+	int coincidencia = 0;
+	if (indice > 0){
+		for (int i=0;i<indice;i++){
+			if (planesPosibles[i].position == planesPosibles[indice].position){
+				for (int x =0;x<planesPosibles[indice].position;x++){
+					if (planesPosibles[indice].year[x] == planesPosibles[i].year[x]){
+						result = 1;
+						coincidencia ++;
+
+					}
+					else{
+						result = 0;
+						coincidencia = 0;
+					}
+				}
+			}
 		}
 	}
+
+	printf("%d-%d\n", coincidencia,planesPosibles[indice].position);
+
+	if (result == 1 && coincidencia==planesPosibles[indice].position+1){
+		return 1;
+	}
+	else{
+		return 0;
+	}
 }
-}
+
+
+
 
 
 
@@ -195,7 +257,6 @@ void replaceAlgorithm(InitialTable initialData[totalUsefulLife], FinalTable fina
 			answer.position = 0;
 			answer.profit = initialCost;
 		}
-
 		for (int i = 0;i<flag;i++){
 			candidate aux;
 			aux = options[i];
