@@ -17,10 +17,11 @@ GtkWidget       *g_spinbutton_timeLimit;
 GtkWidget       *g_entry_initialCost;
 GtkWidget       *g_scrolledwindow_initialTableData;
 GtkWidget       *g_scrolledwindow_finalTable;
+GtkWidget       *g_scrolledwindow_optimalSolution;
 FILE            *file_tableData;
 
-const char *rowHeaderInitialTable[4] = {"Año","Precio de Reventa","Mantenimiento","Ganancia"};
-const char *rowHeaderFinalTable[3] = {"t","G(t)","Próximo"};
+const char *rowHeaderInitialTable[3] = {"Año","Precio de Reventa","Mantenimiento"};
+const char *rowHeaderFinalTable[4] = {"t","G(t)","Próximo","Ganancia"};
 int usefulLife = 0;
 InitialTable *initialData;
 
@@ -48,6 +49,7 @@ int main(int argc, char *argv[]) {
 
     g_scrolledwindow_initialTableData = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_initialTableData"));
     g_scrolledwindow_finalTable = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_finalTable"));
+    g_scrolledwindow_optimalSolution = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_optimalSolution"));
 
     g_frame_fileEntry = GTK_WIDGET(gtk_builder_get_object(builder, "frame_fileEntry"));
     gtk_widget_hide(g_frame_fileEntry);
@@ -114,15 +116,14 @@ void createTableData() {
   char rowNumber[4];
 
   for(int j = 0; j < usefulLife; j++) {
-    tableData[j] = calloc(4,sizeof(GtkWidget*));
+    tableData[j] = calloc(3,sizeof(GtkWidget*));
   }
 
   for(int row =0; row < usefulLife; row++) 
   {
-    for(int column=0; column < 4; column++) 
+    for(int column=0; column < 3; column++) 
     {
       tableData[row][column] = gtk_entry_new();
-      gtk_entry_set_width_chars(GTK_ENTRY(tableData[row][column]),10);
       gtk_grid_attach (GTK_GRID (g_tableData),tableData[row][column] , column, row, 1, 1);
       if (row == 0){
         gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),rowHeaderInitialTable[column]);
@@ -135,15 +136,12 @@ void createTableData() {
         gtk_widget_set_name(tableData[row][column],"header");
         gtk_widget_set_sensitive(tableData[row][column],FALSE);
       }
-      if (column ==3 && row!=0){
-        gtk_entry_set_text (GTK_ENTRY(tableData[row][column]),"0");
-      }
     }
   }
   gtk_widget_show_all(windowTableData);
 }
 
-void createTableDataFile(int Matriz[usefulLife-1][3]){
+void createTableDataFile(int Matriz[usefulLife-1][2]){
   tableData = calloc(usefulLife,sizeof(GtkWidget**));
 
   g_tableData = gtk_grid_new ();
@@ -152,12 +150,12 @@ void createTableDataFile(int Matriz[usefulLife-1][3]){
   char rowNumber[4];
 
   for(int j = 0; j < usefulLife; j++) {
-    tableData[j] = calloc(4,sizeof(GtkWidget*));
+    tableData[j] = calloc(3,sizeof(GtkWidget*));
   }
 
   for(int row =0; row < usefulLife; row++) 
   {
-    for(int column=0; column < 4; column++) 
+    for(int column=0; column < 3; column++) 
     {
       char str[10];
       tableData[row][column] = gtk_entry_new();
@@ -194,14 +192,15 @@ void createFinalTableData(int timeLimit,FinalTable finalData[timeLimit+1]) {
   char rowNumber[3];
 
   for(int j = 0; j < ptimeLimit; j++) {
-    tableData[j] = calloc(3,sizeof(GtkWidget*));
+    tableData[j] = calloc(4,sizeof(GtkWidget*));
   }
 
   for(int row = 0; row < ptimeLimit; row++) 
   {
-    for(int column=0; column < 3; column++) 
+    for(int column=0; column < 4; column++) 
     {
       tableData[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(tableData[row][column]),10);
       gtk_widget_set_sensitive(tableData[row][column],FALSE);
       gtk_grid_attach (GTK_GRID (g_tableData),tableData[row][column] , column, row, 1, 1);
       if (row == 0) {
@@ -214,6 +213,9 @@ void createFinalTableData(int timeLimit,FinalTable finalData[timeLimit+1]) {
       FinalTable data = finalData[row-1];
       char gt[50];
       char prox[50];
+      char profit[50];
+
+      strcpy(prox," ");
 
       sprintf(rowNumber, "%d", row -1);
       gtk_entry_set_text (GTK_ENTRY(tableData[row][0]),rowNumber);
@@ -236,7 +238,12 @@ void createFinalTableData(int timeLimit,FinalTable finalData[timeLimit+1]) {
       
       gtk_entry_set_text (GTK_ENTRY(tableData[row][2]),prox);
       gtk_widget_set_name(tableData[row][2],"allEntries");
+
+      sprintf(profit, "%d", data.profit);
+      gtk_entry_set_text (GTK_ENTRY(tableData[row][3]), profit);
+      gtk_widget_set_name(tableData[row][3],"allEntries");
       memset(prox,'\0',strlen(prox));
+      memset(profit,'\0',strlen(profit));
     }
   }
   gtk_widget_show_all(windowFinalTable);
@@ -247,7 +254,7 @@ void createFile(char *fileName) {
 
   for(int row =0; row < usefulLife; row++) 
   {
-    for(int column=0; column < 4; column++) 
+    for(int column=0; column < 3; column++) 
     {
       fprintf(file_tableData,"%s;",(gtk_entry_get_text(GTK_ENTRY(tableData[row][column]))));
     }
@@ -256,7 +263,7 @@ void createFile(char *fileName) {
   fclose(file_tableData);
 }
 
-void createObjects(){
+void createObjects() {
   initialData = calloc(usefulLife,sizeof(InitialTable));
   for (int row = 1; row < usefulLife;row ++)
   {
@@ -264,11 +271,18 @@ void createObjects(){
     data.year = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][0])));
     data.sale = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][1])));
     data.maintenance = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][2])));
-    data.profit = atoi(gtk_entry_get_text(GTK_ENTRY(tableData[row][3])));
     initialData[row-1] = data;
   }
 }
 
+void createOptimalSolution() {
+  GtkWidget *g_lblSolution = gtk_label_new (" ");
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_optimalSolution), g_lblSolution);
+
+  gtk_widget_set_name(g_lblSolution,"label");
+
+  gtk_widget_show_all(windowFinalTable);
+}
 void on_btn_manualEntry_clicked() {
   gtk_widget_hide(g_frame_fileEntry);
   gtk_widget_show(g_frame_manualEntry);
@@ -288,7 +302,7 @@ void on_btn_usefulLife_clicked() {
 
 void on_btn_getFile_clicked() {
   usefulLife = countUsefulLifeFiles (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(g_filechooser_btn)));
-  int matrixData[usefulLife-1][3];
+  int matrixData[usefulLife-1][2];
   startFill(matrixData,gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)));
   createTableDataFile(matrixData);
 
@@ -316,6 +330,7 @@ void on_btn_getTableData_clicked() {
   free(initialData);
   createFinalTableData(timeLimit,finalData);
   planes(finalData);
+  createOptimalSolution();
 
   gtk_widget_hide(windowTableData);
   gtk_widget_show_now(windowFinalTable);

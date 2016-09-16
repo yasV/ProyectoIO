@@ -14,20 +14,19 @@ typedef struct  {
   int year[31];
   int value;	
   int position;
+  int profit;
 } FinalTable;
 
 
-typedef struct 
-{
+typedef struct {
 	int value;
 	int year;
-}candidate;
+} candidate;
 
 typedef struct  {
   int year;	
   int sale;
   int maintenance;
-  int profit;
 } InitialTable;
 
 void setTotalObjectsCount(int pTotalUsefulLife,int pInitialCost, int pTimeLimit) {
@@ -71,14 +70,14 @@ int scanner() {
 	return 0;
 }
 
-void setMatriz(int matrizD[totalUsefulLife-1][3]) {
+void setMatriz(int matrizD[totalUsefulLife-1][2]) {
 	int row = 0;
 	int column = 0;
 	int flag=0;
 	int action = scanner();
 
 	while (row < totalUsefulLife) {
-	 	while (column < 4) {
+	 	while (column < 3) {
 	 		if (action == 1 && row!=0 && flag==1) {
 			 	int value = atoi(buffer);
 		 		matrizD[row-1][column-1] = value;
@@ -111,7 +110,7 @@ int countUsefulLifeFiles(char * address) {
 	return totalUsefulLife;
 }
 
-void startFill(int matrizD[][3],char *address) {
+void startFill(int matrizD[][2],char *address) {
 	fileTableData = fopen(address,"r");
 	setMatriz(matrizD);
 }
@@ -122,8 +121,8 @@ void mostrar_respuesta(FinalTable finalData[timeLimit+1]){
 	 int contador = 0;
 	 FinalTable answer = finalData[contador];
 	 printf("%d",0);
+
 	 while(stop==0){
-	 	
 	 	if (answer.position==0){
 	 		stop = 1;
 	 	}
@@ -132,7 +131,7 @@ void mostrar_respuesta(FinalTable finalData[timeLimit+1]){
 	 		answer = finalData[answer.year[answer.position-1]];
 	 	}
 	 }
-	 				printf("______________________________________\n");
+	 printf("______________________________________\n");
 
 }
 
@@ -140,8 +139,7 @@ void planes(FinalTable finalData[timeLimit+1]){
 	
 		for (int i=0;i<=timeLimit;i++){
 			if (finalData[i].position > 1){
-				int x = finalData[i].position;
-			for (x;x>=1;x--){
+			for (int x = finalData[i].position;x>=1;x--){
 				printf("%d\n",x );
 				 mostrar_respuesta(finalData);
 				 finalData[i].position = finalData[i].position-1;
@@ -195,6 +193,7 @@ void replaceAlgorithm(InitialTable initialData[totalUsefulLife], FinalTable fina
 			answer.value = posibilites.value;
 			answer.year[0] = posibilites.year;
 			answer.position = 0;
+			answer.profit = initialCost;
 		}
 
 		for (int i = 0;i<flag;i++){
@@ -219,8 +218,8 @@ void replaceAlgorithm(InitialTable initialData[totalUsefulLife], FinalTable fina
 
 			}
 			answer.value = min;
+			answer.profit = initialCost - min;
 		}
 		finalData[i] = answer;
-}
-
+	}
 }
