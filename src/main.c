@@ -53,10 +53,14 @@ void on_btn_knapsack_clicked() {
   system("./knapsack &");
 }
 
-void on_display_pending() {
-  system("./pending &"); 
-}
-
 void on_btn_equipmentReplace_clicked() {
   system("./reemplazoEquipos &"); 
+}
+
+void on_btn_sportSeries_clicked() {
+  system("./seriesDeportivas &");
+}
+
+void on_display_pending() {
+  system("./pending &"); 
 }
