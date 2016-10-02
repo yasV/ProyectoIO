@@ -1,12 +1,15 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <math.h>
 #include "algoritmo_series.h"
 
 GtkWidget       *windowInitial;
 GtkWidget       *windowSecond;
 GtkWidget       *windowFinal;
 GtkWidget       **inputFormatSerie;
+GtkWidget       ***tableData;
 GtkWidget       *g_tableData;
 GtkWidget       *g_frame_manualEntry;
 GtkWidget       *g_frame_fileEntry;
@@ -18,6 +21,7 @@ GtkWidget       *g_spinbutton_games;
 GtkWidget       *g_spinbutton_ph;
 GtkWidget       *g_spinbutton_pr;
 GtkWidget       *g_scrolledwindow_serieFormat;
+GtkWidget       *g_scrolledwindow_finalTable;
 FILE            *file_tableData;
 
 int main(int argc, char *argv[]) {
@@ -48,6 +52,7 @@ int main(int argc, char *argv[]) {
     gtk_widget_hide(g_frame_manualEntry);
 
     g_scrolledwindow_serieFormat = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_serieFormat"));
+    g_scrolledwindow_finalTable = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_finalTable"));
 
     g_filechooser_btn = GTK_WIDGET(gtk_builder_get_object(builder, "filechooser_btn"));
     GtkFileFilter *filter = gtk_file_filter_new ();
@@ -102,12 +107,12 @@ void createButtons(){
   gtk_container_add (GTK_CONTAINER (g_scrolledwindow_serieFormat), g_tableData);
 
   char text[14];
-  char rowNumber[4];
+  char number[4];
   for(int column =0; column < inputNumberGames; column++) 
   {
   	strcpy(text,"Partido  ");
-  	sprintf(rowNumber, "%d", column + 1);
-  	strcat(text,rowNumber);
+  	sprintf(number, "%d", column + 1);
+  	strcat(text,number);
     inputFormatSerie[column] = gtk_toggle_button_new_with_label (text);
     gtk_grid_attach (GTK_GRID (g_tableData),inputFormatSerie[column] , column, 0, 1, 1);
     memset(text,'\0',strlen(text));
@@ -121,15 +126,63 @@ void createFile(char *fileName) {
   fprintf(file_tableData,"%d\n",inputNumberGames);
   fprintf(file_tableData,"%%\n");
   fprintf(file_tableData,"%f\n",ph);
+  fprintf(file_tableData,"%%\n");
   fprintf(file_tableData,"%f\n",pr);
-  fprintf(file_tableData,"^\n");
 
   for(int column =0; column < inputNumberGames; column++) 
   {
-    fprintf(file_tableData,"%d;",formatSerie[column]);
+    fprintf(file_tableData,"%d^",formatSerie[column]);
   }
   
   fclose(file_tableData);
+}
+
+void createFinalTable() {
+	free(inputFormatSerie);
+	int n = inputNumberGames - 1;
+
+	tableData = calloc(n,sizeof(GtkWidget**));
+
+  g_tableData = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_finalTable), g_tableData);
+
+  char number[3];
+
+  for(int j = 0; j < n; j++) {
+    tableData[j] = calloc(n,sizeof(GtkWidget*));
+  }
+
+  for(int row = 0; row < n; row++) 
+  {
+    for(int column=0; column < n; column++) 
+    {
+    	tableData[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(tableData[row][column]),10);
+      gtk_widget_set_sensitive(tableData[row][column],FALSE);
+      gtk_grid_attach (GTK_GRID (g_tableData),tableData[row][column] , column, row, 1, 1);
+
+    	if (row == 0 && column == 0) {
+    		gtk_entry_set_text (GTK_ENTRY(tableData[row][column])," ");
+        gtk_widget_set_name(tableData[row][column],"header");
+    	}
+    	if (row != 0 && column == 0) {
+    		sprintf(number, "%d", row - 1);
+    		gtk_entry_set_text (GTK_ENTRY(tableData[row][column]), number);
+        gtk_widget_set_name(tableData[row][column],"header");
+    	}
+    	if (row == 0 && column != 0) {
+    		sprintf(number, "%d", column - 1);
+    		gtk_entry_set_text (GTK_ENTRY(tableData[row][column]), number);
+        gtk_widget_set_name(tableData[row][column],"header");
+    	}
+    	if (row != 0 && column != 0) {
+    		gtk_entry_set_text (GTK_ENTRY(tableData[row][column]), "1");
+    	}
+    }
+  }
+  gtk_entry_set_text (GTK_ENTRY(g_entry_probabilidadA), "0.5780");
+  gtk_entry_set_text (GTK_ENTRY(g_entry_probabilidadB), "0.422");
+  gtk_widget_show_all(windowFinal);
 }
 /***************PRIMER PANTALLA**********************/
 void on_window_initial_destroy() {
@@ -148,7 +201,6 @@ void on_btn_fileEntry_clicked() {
 
 void on_btn_getNumberGames_clicked() {
 	inputNumberGames = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON(g_spinbutton_games));
-	printf("Numero de juegos ingresado: %d\n", inputNumberGames );
 	createButtons();
   gtk_widget_hide(windowInitial);
   gtk_widget_show_now(windowSecond);
@@ -156,8 +208,23 @@ void on_btn_getNumberGames_clicked() {
 
 void on_btn_getFile_clicked(){
 	setData( gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)) );
-	//gtk_widget_hide(windowInitial);
-  //gtk_widget_show_now(windowSecond);
+	createButtons();
+
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(g_spinbutton_ph),ph);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(g_spinbutton_pr),pr);
+
+	for(int row =0; row < inputNumberGames; row++)
+	{
+		if (formatSerie[row] == 1){
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(inputFormatSerie[row]) , TRUE);
+		}
+		else {
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(inputFormatSerie[row]) , FALSE);
+		}
+	}
+
+	gtk_widget_hide(windowInitial);
+  gtk_widget_show_now(windowSecond);
 }
 
 /***************SEGUNDA PANTALLA**********************/
@@ -189,6 +256,7 @@ void on_btn_getData_clicked() {
   strcat(fileName, ".cvs");
 
   createFile(fileName);
+  createFinalTable();
 
 	gtk_widget_hide(windowSecond);
   gtk_widget_show_now(windowFinal);

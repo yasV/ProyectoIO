@@ -11,22 +11,19 @@ float qh = 0.0;
 float qr = 0.0;
 int *formatSerie;
 
-FILE * fileTableData;
+FILE * fileData;
 
 
-int getTotalLines(char * address) {
-	fileTableData = fopen(address,"r");
-	int ch;
+int getTotalCharacter(char * address) {
+	fileData = fopen(address,"r");
 	int total = 0;
 
-	while(feof(fileTableData) == 0) {  
-		ch = fgetc(fileTableData);
-		if (ch == '\n'){
-			total ++;
-		}
+	int c;
+	if (fileData) {
+	    while ((c = getc(fileData)) != EOF)
+	        total++;
+	    fclose(fileData);
 	}
-
-	fclose(fileTableData);
 	return total;
 }
 
@@ -51,22 +48,19 @@ int scanner() {
 
 	int ch;
 
-	while (feof(fileTableData)==0) {   
-		ch = fgetc(fileTableData);
+	while (feof(fileData)==0) {   
+		ch = fgetc(fileData);
 		if (ch=='\n') {
 			return 0;
-		}
-		if (ch==';') {
+		} 
+		if (ch=='%') {
 			return 1;
 		}
-		if (ch=='%') {
+		if (ch=='^') {
 			return 2;
 		}
-		if (ch=='^') {
-			return 3;
-		}
 		if (ch=='#') {
-			return 4;
+			return 3;
 		}
 		fillBuffer(ch);
 	}
@@ -74,30 +68,48 @@ int scanner() {
 }
 
 void setData(char *address) {
-	int totalLines = getTotalLines(address);
-
-	fileTableData = fopen(address,"r");
-	inputNumberGames = 0;
-	ph = 0.0;
-	pr = 0.0;
-	int flag=0;
+	int totalCh = getTotalCharacter(address) - 1;
+	fileData = fopen(address,"r");
+	
 	int row = 0;
+	int flag=0;
+	int formatPosition = 0;
 	int action = scanner();
 
-	while (row < ) {
-		printf("ActionL %d\n", action );
-	 		if (flag==1) {
-			 	int value = atoi(buffer);
-		 		printf("Numero de juegos:%d\n", value);
-		 	}
-		 	if (flag == 0 && action==4) {
-		 		flag = 1;
-		 	}
-		 	action = scanner();	
+	while (row < totalCh) {
+		if (action == 3) {
+			action = scanner();
+			row ++;
+			if (action == 0) {
+				action =  scanner();
+				row ++;
+				inputNumberGames = atoi(buffer);
+				formatSerie = calloc(inputNumberGames, sizeof(int));
+			}
+		}
+		if (action == 1) {
+			action = scanner();
+			row ++;
+			if (action == 0) {
+				action =  scanner();
+				row ++;
+				float value = atof(buffer);
+				if (flag == 0) {
+					ph = value;
+					flag = 1;
+				}
+				else{
+					pr = value;
+				}
+			}
+		}
+		if (action == 2) {
+			int value = atoi(buffer);
+			formatSerie[formatPosition] = value;
+			formatPosition++;
+		}
 	 	
 	 	row ++;
-	 	flag = 0;
 	 	action = scanner();
 	}
-	
 }
