@@ -24,6 +24,8 @@ GtkWidget       *g_scrolledwindow_serieFormat;
 GtkWidget       *g_scrolledwindow_finalTable;
 FILE            *file_tableData;
 
+int matrixSize;
+
 int main(int argc, char *argv[]) {
     GtkBuilder      *builder; 
     /*--- CSS -----------------*/
@@ -137,7 +139,7 @@ void createFile(char *fileName) {
   fclose(file_tableData);
 }
 
-void createFinalTable() {
+void createFinalTable(double table[matrixSize+1][matrixSize+1]) {
 	free(inputFormatSerie);
 	int n = inputNumberGames - 1;
 
@@ -146,7 +148,7 @@ void createFinalTable() {
   g_tableData = gtk_grid_new ();
   gtk_container_add (GTK_CONTAINER (g_scrolledwindow_finalTable), g_tableData);
 
-  char number[3];
+  char number[8];
 
   for(int j = 0; j < n; j++) {
     tableData[j] = calloc(n,sizeof(GtkWidget*));
@@ -176,7 +178,8 @@ void createFinalTable() {
         gtk_widget_set_name(tableData[row][column],"header");
     	}
     	if (row != 0 && column != 0) {
-    		gtk_entry_set_text (GTK_ENTRY(tableData[row][column]), "1");
+        sprintf(number, "%f", table[row-1][column-1]);
+    		gtk_entry_set_text (GTK_ENTRY(tableData[row][column]), number);
     	}
     }
   }
@@ -255,13 +258,24 @@ void on_btn_getData_clicked() {
   strcat(fileName, gtk_entry_get_text (GTK_ENTRY(g_entry_fileName)));
   strcat(fileName, ".cvs");
 
+  matrixSize = calculateMatrixSize(inputNumberGames);
+  setBValues();
+  double table[matrixSize+1][matrixSize+1];
+  algorithm(table);
+    for (int row = 0; row<=gamesPlayer;row++){
+    for (int col = 0; col <=gamesPlayer;col ++){
+      printf("%f   ",table[row][col]);
+    }
+    printf("\n");
+  }
+
   createFile(fileName);
-  createFinalTable();
+  createFinalTable(table);
 
 	gtk_widget_hide(windowSecond);
   gtk_widget_show_now(windowFinal);
+  
 }
-
 /***************TERCERA PANTALLA**********************/
 void on_window_final_destroy() {
 	gtk_main_quit();

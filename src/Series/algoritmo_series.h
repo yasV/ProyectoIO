@@ -5,6 +5,7 @@
 char buffer[9];
 
 int inputNumberGames = 0;
+int gamesPlayer = 0;
 float ph = 0.0;
 float pr = 0.0;
 float qh = 0.0;
@@ -113,3 +114,46 @@ void setData(char *address) {
 	 	action = scanner();
 	}
 }
+
+
+int calculateMatrixSize(int totalGames){
+	gamesPlayer = (totalGames /2) + 1;
+	return (totalGames /2) + 1 ;
+
+	
+}
+
+int getGame(int foulA,int foulB){
+
+	int gameNumber = (gamesPlayer - foulA) + (gamesPlayer - foulB);
+	return gameNumber;
+	
+}
+
+void algorithm(double table[gamesPlayer+1][gamesPlayer+1]){
+	
+	table [0][0] = 0;
+	for (int i = 1;i<=gamesPlayer;i++){
+		table[0][i] = 1.0000;
+		table[i][0] = 0.0000;
+	}
+
+	for (int row = 1; row<=gamesPlayer;row++){
+		for (int col = 1; col <=gamesPlayer;col ++){
+			if (formatSerie[getGame(row,col)]==1){
+				table[row][col] = ph * (table[row-1][col]) + qr * (table[row][col-1]); 
+			}
+			else{
+				table[row][col] = pr * (table[row-1][col]) + qh * (table[row][col-1]);	
+			}
+		}
+	}
+}
+
+void setBValues(){
+	qr = 1- ph;
+	qh = 1- pr;
+
+	printf("%f%f\n;",qr,qh );
+}
+
