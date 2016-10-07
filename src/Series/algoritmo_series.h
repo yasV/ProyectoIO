@@ -79,29 +79,17 @@ void setData(char *address) {
 
 	while (row < totalCh) {
 		if (action == 3) {
-			action = scanner();
-			row ++;
-			if (action == 0) {
-				action =  scanner();
-				row ++;
-				inputNumberGames = atoi(buffer);
-				formatSerie = calloc(inputNumberGames, sizeof(int));
-			}
+			inputNumberGames = atoi(buffer);
+			formatSerie = calloc(inputNumberGames, sizeof(int));
 		}
-		if (action == 1) {
-			action = scanner();
-			row ++;
-			if (action == 0) {
-				action =  scanner();
-				row ++;
-				float value = atof(buffer);
-				if (flag == 0) {
-					ph = value;
-					flag = 1;
-				}
-				else{
-					pr = value;
-				}
+		if (action == 1) {	
+			float value = atof(buffer);
+			if (flag == 0) {
+				ph = value;
+				flag = 1;
+			}
+			else{
+				pr = value;
 			}
 		}
 		if (action == 2) {
@@ -119,8 +107,6 @@ void setData(char *address) {
 int calculateMatrixSize(int totalGames){
 	gamesPlayer = (totalGames /2) + 1;
 	return (totalGames /2) + 1 ;
-
-	
 }
 
 int getGame(int foulA,int foulB){
@@ -149,11 +135,3 @@ void algorithm(double table[gamesPlayer+1][gamesPlayer+1]){
 		}
 	}
 }
-
-void setBValues(){
-	qr = 1- ph;
-	qh = 1- pr;
-
-	printf("%f%f\n;",qr,qh );
-}
-

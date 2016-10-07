@@ -115,7 +115,7 @@ void createButtons(){
   	strcpy(text,"Partido  ");
   	sprintf(number, "%d", column + 1);
   	strcat(text,number);
-    inputFormatSerie[column] = gtk_toggle_button_new_with_label (text);
+    inputFormatSerie[column] = gtk_toggle_button_new_with_label (text); 
     gtk_grid_attach (GTK_GRID (g_tableData),inputFormatSerie[column] , column, 0, 1, 1);
     memset(text,'\0',strlen(text));
   }
@@ -124,12 +124,9 @@ void createButtons(){
 
 void createFile(char *fileName) {
   file_tableData = fopen(fileName,"w+");
-  fprintf(file_tableData,"#\n");
-  fprintf(file_tableData,"%d\n",inputNumberGames);
-  fprintf(file_tableData,"%%\n");
-  fprintf(file_tableData,"%f\n",ph);
-  fprintf(file_tableData,"%%\n");
-  fprintf(file_tableData,"%f\n",pr);
+  fprintf(file_tableData,"%d#\n",inputNumberGames);
+  fprintf(file_tableData,"%f%%\n",ph);
+  fprintf(file_tableData,"%f%%\n",pr);
 
   for(int column =0; column < inputNumberGames; column++) 
   {
@@ -141,7 +138,8 @@ void createFile(char *fileName) {
 
 void createFinalTable(double table[matrixSize+1][matrixSize+1]) {
 	free(inputFormatSerie);
-	int n = inputNumberGames - 1;
+	int n = matrixSize + 2;
+	
 
 	tableData = calloc(n,sizeof(GtkWidget**));
 
@@ -167,6 +165,9 @@ void createFinalTable(double table[matrixSize+1][matrixSize+1]) {
     		gtk_entry_set_text (GTK_ENTRY(tableData[row][column])," ");
         gtk_widget_set_name(tableData[row][column],"header");
     	}
+    	if (row == 1 && column == 1) {
+    		gtk_entry_set_text (GTK_ENTRY(tableData[row][column])," ");
+    	}
     	if (row != 0 && column == 0) {
     		sprintf(number, "%d", row - 1);
     		gtk_entry_set_text (GTK_ENTRY(tableData[row][column]), number);
@@ -178,13 +179,23 @@ void createFinalTable(double table[matrixSize+1][matrixSize+1]) {
         gtk_widget_set_name(tableData[row][column],"header");
     	}
     	if (row != 0 && column != 0) {
-        sprintf(number, "%f", table[row-1][column-1]);
+        sprintf(number, "%.4f", table[row-1][column-1]);
     		gtk_entry_set_text (GTK_ENTRY(tableData[row][column]), number);
     	}
     }
   }
-  gtk_entry_set_text (GTK_ENTRY(g_entry_probabilidadA), "0.5780");
-  gtk_entry_set_text (GTK_ENTRY(g_entry_probabilidadB), "0.422");
+  
+  gtk_entry_set_text (GTK_ENTRY(tableData[1][1]), " ");
+  gtk_widget_set_name(tableData[n-1][n-1],"bestProba");
+
+  float pA = table[n-2][n-2];
+  float pB = 1 - pA;
+
+  sprintf(number, "%.4f", pA);
+  gtk_entry_set_text (GTK_ENTRY(g_entry_probabilidadA), number);
+
+  sprintf(number, "%.4f", pB);
+  gtk_entry_set_text (GTK_ENTRY(g_entry_probabilidadB), number);
   gtk_widget_show_all(windowFinal);
 }
 /***************PRIMER PANTALLA**********************/
@@ -259,15 +270,8 @@ void on_btn_getData_clicked() {
   strcat(fileName, ".cvs");
 
   matrixSize = calculateMatrixSize(inputNumberGames);
-  setBValues();
   double table[matrixSize+1][matrixSize+1];
   algorithm(table);
-    for (int row = 0; row<=gamesPlayer;row++){
-    for (int col = 0; col <=gamesPlayer;col ++){
-      printf("%f   ",table[row][col]);
-    }
-    printf("\n");
-  }
 
   createFile(fileName);
   createFinalTable(table);

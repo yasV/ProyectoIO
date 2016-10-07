@@ -40,6 +40,12 @@ GtkButton.buttonSerie:hover {
 	font-weight: bold;
 }
 
+#bestProba {
+	color: green;
+	border-radius: 0;
+	font-weight: bold;
+}
+
 GtkEntry {
 	border-radius: 0;
 	background: #E6E6E6;
