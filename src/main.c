@@ -57,6 +57,9 @@ void on_btn_equipmentReplace_clicked() {
   system("./reemplazoEquipos &"); 
 }
 
+void on_btn_optimalBsearchTree_clicked(){
+    system("./arbolBinario &");
+}
 void on_btn_sportSeries_clicked() {
   system("./seriesDeportivas &");
 }
