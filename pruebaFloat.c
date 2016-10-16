@@ -15,8 +15,6 @@ typedef struct  {
    float probabilidad;
 } Objects;
 
-Objects *KeyList;
-
 /*Read Files*/
 void fillBuffer(int _val) {
 	if (strlen(buffer) == 0) {
@@ -103,30 +101,18 @@ int countRowsFile(char * address){
 	return inputNumberKeys - 1;
 }
 
-void startFill(Objects matrizD[inputNumberKeys],char *address){
-	fileTableData = fopen(address,"r");
+int main()
+{
+	inputNumberKeys = countRowsFile("/home/yasiell/Desktop/ProyectoIO/examples/Arboles/ejemplo3.cvs");
+	
+	fileTableData = fopen("/home/yasiell/Desktop/ProyectoIO/examples/Arboles/ejemplo3.cvs","r");
+	Objects matrizD[inputNumberKeys];
 	setMatriz(matrizD);
-	fclose(fileTableData);
-}
 
-void alphabeticalOrder() {
-	Objects temp;
-
-	for(int i=0; i < inputNumberKeys; i++) {
-		for(int j=i+1; j<inputNumberKeys; j++) {
-			Objects keyList1 = KeyList[i];
-			Objects keyList2 = KeyList[j];
-			if(strcmp(keyList1.texto, keyList2.texto) > 0) {
-				temp = keyList1;
-				KeyList[i] = keyList2;
-				KeyList[j] = temp;
-			}
-		}
-  }
-
-  /*for (int i = 0; i < inputNumberKeys; ++i)
-  {
-  	Objects key = KeyList[i];
-  	printf("Llave[%d]: texto: %s peso: %f proba: %f\n", i, key.texto, key.peso, key.probabilidad);
-  }*/
+	for (int i = 0; i < inputNumberKeys; ++i)
+	{
+		Objects key = matrizD[i];
+		printf("Llave[%d]: texto :%s peso: %f proba: %f\n", i, key.texto, key.peso, key.probabilidad  );
+	}
+  return 0;
 }

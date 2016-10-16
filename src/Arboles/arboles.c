@@ -1,5 +1,4 @@
 #include <gtk/gtk.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
@@ -10,16 +9,22 @@ GtkWidget       *windowSecond;
 GtkWidget       *windowFinal;
 GtkWidget       ***initialTable;
 GtkWidget       *g_initialTable;
+GtkWidget       ***tableA;
+GtkWidget       *g_tableA;
+GtkWidget       ***tableR;
+GtkWidget       *g_tableR;
 GtkWidget       *g_frame_manualEntry;
 GtkWidget       *g_frame_fileEntry;
 GtkWidget       *g_filechooser_btn;
 GtkWidget       *g_entry_fileName;
 GtkWidget       *g_spinbutton_numberKeys;
 GtkWidget       *g_scrolledwindow_initialTable;
+GtkWidget       *g_scrolledwindow_tableA;
+GtkWidget       *g_scrolledwindow_keyListOrdered;
+GtkWidget       *g_scrolledwindow_tableR;
 FILE            *file_tableData;
 
 const char *rowHeader[2] = {"Texto","Peso"};
-Objects *KeyList;
 
 int main(int argc, char *argv[]) {
     GtkBuilder      *builder; 
@@ -49,6 +54,9 @@ int main(int argc, char *argv[]) {
     gtk_widget_hide(g_frame_manualEntry);
 
     g_scrolledwindow_initialTable = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_initialTable"));
+    g_scrolledwindow_tableA = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_tableA"));
+    g_scrolledwindow_tableR = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_tableR"));
+    g_scrolledwindow_keyListOrdered = GTK_WIDGET(gtk_builder_get_object(builder, "scrolledwindow_keyListOrdered"));
 
     g_filechooser_btn = GTK_WIDGET(gtk_builder_get_object(builder, "filechooser_btn"));
     GtkFileFilter *filter = gtk_file_filter_new ();
@@ -160,7 +168,7 @@ void createTableDataFile(Objects Matriz[inputNumberKeys]){
           gtk_entry_set_text (GTK_ENTRY(initialTable[row][column]),key.texto); 
         }
         if(column == 1) {
-          sprintf(str, "%d", key.peso);
+          sprintf(str, "%.2f", key.peso);
           gtk_entry_set_text (GTK_ENTRY(initialTable[row][column]),str);
         }
       }
@@ -177,12 +185,138 @@ void createObjects() {
   {
     Objects key;
     strcpy(key.texto, gtk_entry_get_text(GTK_ENTRY(initialTable[row][0])) );
-    key.peso = atoi(gtk_entry_get_text(GTK_ENTRY(initialTable[row][1])));
+    key.peso = atof(gtk_entry_get_text(GTK_ENTRY(initialTable[row][1])));
     key.probabilidad = 0;
     KeyList[row-1] = key;
   }
 }
 
+void createTableA() {
+  int keys = inputNumberKeys + 2;
+  tableA = calloc(keys,sizeof(GtkWidget**));
+
+  g_tableA = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_tableA), g_tableA);
+
+  for(int j = 0; j < keys; j++) {
+    tableA[j] = calloc(keys,sizeof(GtkWidget*));
+  }
+
+  for(int row =0; row < keys; row++) 
+  {
+    for(int column=0; column < keys; column++) 
+    {
+      char str[10];
+      tableA[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(tableA[row][column]),8);
+      gtk_grid_attach (GTK_GRID (g_tableA),tableA[row][column] , column, row, 1, 1);
+      gtk_widget_set_sensitive(tableA[row][column],FALSE);
+
+      if (row == 0 && column != 0){
+        sprintf(str, "%d", column-1);
+        gtk_entry_set_text (GTK_ENTRY(tableA[row][column]),str);
+        gtk_widget_set_name(tableA[row][column],"header");
+      }
+      if (column == 0 && row != 0){
+        sprintf(str, "%d", row);
+        gtk_entry_set_text (GTK_ENTRY(tableA[row][column]),str);
+        gtk_widget_set_name(tableA[row][column],"header");
+      }
+      if (column != 0 && row != 0){
+        gtk_entry_set_text (GTK_ENTRY(tableA[row][column])," ");
+      }
+    }
+  }
+  gtk_widget_set_name(tableA[0][0],"header");
+  gtk_widget_show_all(windowFinal);
+}
+
+void createTableR() {
+  int keys = inputNumberKeys + 2;
+  tableR = calloc(keys,sizeof(GtkWidget**));
+
+  g_tableR = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_tableR), g_tableR);
+
+  for(int j = 0; j < keys; j++) {
+    tableR[j] = calloc(keys,sizeof(GtkWidget*));
+  }
+
+  for(int row =0; row < keys; row++) 
+  {
+    for(int column=0; column < keys; column++) 
+    {
+      char str[10];
+      tableR[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(tableR[row][column]),8);
+      gtk_grid_attach (GTK_GRID (g_tableR),tableR[row][column] , column, row, 1, 1);
+      gtk_widget_set_sensitive(tableR[row][column],FALSE);
+
+      if (row == 0 && column != 0){
+        sprintf(str, "%d", column-1);
+        gtk_entry_set_text (GTK_ENTRY(tableR[row][column]),str);
+        gtk_widget_set_name(tableR[row][column],"header");
+      }
+      if (column == 0 && row != 0){
+        sprintf(str, "%d", row);
+        gtk_entry_set_text (GTK_ENTRY(tableR[row][column]),str);
+        gtk_widget_set_name(tableR[row][column],"header");
+      }
+      if (column != 0 && row != 0){
+        gtk_entry_set_text (GTK_ENTRY(tableR[row][column])," ");
+      }
+    }
+  }
+  gtk_widget_set_name(tableR[0][0],"header");
+  gtk_widget_show_all(windowFinal);
+}
+
+void displayKeyListOrdered(){
+  int keys = inputNumberKeys + 1;
+  initialTable = calloc(keys,sizeof(GtkWidget**));
+
+  g_initialTable = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_keyListOrdered), g_initialTable);
+
+  for(int j = 0; j < keys; j++) {
+    initialTable[j] = calloc(2,sizeof(GtkWidget*));
+  }
+
+  for(int row =0; row < keys; row++) 
+  {
+    for(int column=0; column < 2; column++) 
+    {
+      char str[10];
+      initialTable[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(initialTable[row][column]),8);
+      gtk_grid_attach (GTK_GRID (g_initialTable),initialTable[row][column] , column, row, 1, 1);
+      gtk_widget_set_sensitive(initialTable[row][column],FALSE);
+
+      if (row == 0){
+        if(column == 0){
+          gtk_entry_set_text (GTK_ENTRY(initialTable[row][column]),"Texto");
+        }
+        if(column == 1) {
+          gtk_entry_set_text (GTK_ENTRY(initialTable[row][column]),"Probabilidad");
+        }
+        gtk_widget_set_name(initialTable[row][column],"header");
+      }
+      if( row != 0) {
+        Objects key = KeyList[row-1];
+
+        if(column == 0){
+          gtk_entry_set_text (GTK_ENTRY(initialTable[row][column]),key.texto); 
+        }
+        if(column == 1) {
+          sprintf(str, "%.2f", key.probabilidad);
+          gtk_entry_set_text (GTK_ENTRY(initialTable[row][column]),str);
+        }
+      }
+    }
+  }
+
+  gtk_widget_show_all(windowFinal);
+}
 /***************PRIMER PANTALLA**********************/
 void on_window_initial_destroy() {
 	gtk_main_quit();
@@ -237,10 +371,19 @@ void on_btn_getData_clicked() {
 
   gtk_widget_hide(windowSecond);
   free(initialTable);
+
+  createTableA();
+  createTableR();
+  alphabeticalOrder();
+  displayKeyListOrdered();
   gtk_widget_show_now(windowFinal);
   
 }
 /***************TERCERA PANTALLA**********************/
 void on_window_final_destroy() {
+  free(tableA);
+  free(tableR);
+  free(initialTable);
+  free(KeyList);
   gtk_main_quit();
 }
