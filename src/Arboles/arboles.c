@@ -191,8 +191,9 @@ void createObjects() {
   }
 }
 
-void createTableA() {
+void createTableA(float table[inputNumberKeys+2][inputNumberKeys+1]) {
   int keys = inputNumberKeys + 2;
+
   tableA = calloc(keys,sizeof(GtkWidget**));
 
   g_tableA = gtk_grid_new ();
@@ -211,6 +212,13 @@ void createTableA() {
       gtk_entry_set_width_chars(GTK_ENTRY(tableA[row][column]),8);
       gtk_grid_attach (GTK_GRID (g_tableA),tableA[row][column] , column, row, 1, 1);
       gtk_widget_set_sensitive(tableA[row][column],FALSE);
+      
+
+      if (row==1 && column ==1){
+        float zero = 0;
+        sprintf(str, "%f", zero);
+        gtk_entry_set_text (GTK_ENTRY(tableA[row][column]),str);
+      }
 
       if (row == 0 && column != 0){
         sprintf(str, "%d", column-1);
@@ -223,7 +231,18 @@ void createTableA() {
         gtk_widget_set_name(tableA[row][column],"header");
       }
       if (column != 0 && row != 0){
-        gtk_entry_set_text (GTK_ENTRY(tableA[row][column])," ");
+
+        if ((row-column)>=1){
+          gtk_entry_set_text (GTK_ENTRY(tableA[row][column])," ");  
+        }
+        else{
+          
+            if (column != 1){
+                sprintf(str,"%f",table[row][column-1]);
+                gtk_entry_set_text (GTK_ENTRY(tableA[row][column]),str);
+          }
+        }
+        
       }
     }
   }
@@ -231,7 +250,7 @@ void createTableA() {
   gtk_widget_show_all(windowFinal);
 }
 
-void createTableR() {
+void createTableR(int table[inputNumberKeys+2][inputNumberKeys+1]) {
   int keys = inputNumberKeys + 2;
   tableR = calloc(keys,sizeof(GtkWidget**));
 
@@ -252,6 +271,12 @@ void createTableR() {
       gtk_grid_attach (GTK_GRID (g_tableR),tableR[row][column] , column, row, 1, 1);
       gtk_widget_set_sensitive(tableR[row][column],FALSE);
 
+      if (row==1 && column ==1){
+        int zero = 0;
+        sprintf(str, "%d", zero);
+        gtk_entry_set_text (GTK_ENTRY(tableR[row][column]),str);
+      }
+
       if (row == 0 && column != 0){
         sprintf(str, "%d", column-1);
         gtk_entry_set_text (GTK_ENTRY(tableR[row][column]),str);
@@ -263,7 +288,15 @@ void createTableR() {
         gtk_widget_set_name(tableR[row][column],"header");
       }
       if (column != 0 && row != 0){
-        gtk_entry_set_text (GTK_ENTRY(tableR[row][column])," ");
+        if ((row-column)>=1){
+          gtk_entry_set_text (GTK_ENTRY(tableR[row][column])," ");  
+        }
+        else{ 
+            if (column != 1){
+                sprintf(str,"%d",table[row][column-1]);
+                gtk_entry_set_text (GTK_ENTRY(tableR[row][column]),str);
+          }
+        }
       }
     }
   }
@@ -371,12 +404,17 @@ void on_btn_getData_clicked() {
 
   gtk_widget_hide(windowSecond);
   free(initialTable);
-
-  createTableA();
-  createTableR();
   alphabeticalOrder();
+  float table[inputNumberKeys+2][inputNumberKeys+1];
+  int RTable[inputNumberKeys+2][inputNumberKeys+1];
+  treeBinaryOpticalAlgorithm(table,RTable);
+
+  createTableA(table);
+  createTableR(RTable);
+  
   displayKeyListOrdered();
   gtk_widget_show_now(windowFinal);
+
   
 }
 /***************TERCERA PANTALLA**********************/
