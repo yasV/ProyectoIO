@@ -40,8 +40,8 @@ GtkButton.buttonTree:hover {
 	font-weight: bold;
 }
 
-#bestProba {
-	color: green;
+#best {
+	color: #04B404;
 	border-radius: 0;
 	font-weight: bold;
 }

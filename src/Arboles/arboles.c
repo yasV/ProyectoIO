@@ -216,7 +216,7 @@ void createTableA(float table[inputNumberKeys+2][inputNumberKeys+1]) {
 
       if (row==1 && column ==1){
         float zero = 0;
-        sprintf(str, "%f", zero);
+        sprintf(str, "%.2f", zero);
         gtk_entry_set_text (GTK_ENTRY(tableA[row][column]),str);
       }
 
@@ -238,7 +238,7 @@ void createTableA(float table[inputNumberKeys+2][inputNumberKeys+1]) {
         else{
           
             if (column != 1){
-                sprintf(str,"%f",table[row][column-1]);
+                sprintf(str,"%.2f",table[row][column-1]);
                 gtk_entry_set_text (GTK_ENTRY(tableA[row][column]),str);
           }
         }
@@ -246,6 +246,7 @@ void createTableA(float table[inputNumberKeys+2][inputNumberKeys+1]) {
       }
     }
   }
+  gtk_widget_set_name(tableA[1][keys-1],"best");
   gtk_widget_set_name(tableA[0][0],"header");
   gtk_widget_show_all(windowFinal);
 }

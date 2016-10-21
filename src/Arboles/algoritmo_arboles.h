@@ -67,13 +67,10 @@ void setMatriz(Objects matrizD[inputNumberKeys]) {
 	 				char * data = malloc(1000);
 		 			strcpy(data,buffer);
 					strcpy(key.texto,data);
-					printf("%s\n", data );
 					otherFlag = 1;
 	 			}
 	 			else{
-	 				printf("Lei el numero: %s\n", buffer );
 	 				float valor = atof(buffer);
-	 				printf("Conversion: %f\n", valor );
 			 		key.peso = valor;
 			 		otherFlag = 0;
 	 			}
