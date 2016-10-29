@@ -121,8 +121,8 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_markup" translatable="yes">Provee el menor tiempo posible de búsqueda</property>
-            <signal name="clicked" handler="on_display_pending" swapped="no"/>
+            <property name="tooltip_markup" translatable="yes">Calcula el Árbol Binario de Búsqueda de costo promedio mı́nimo</property>
+            <signal name="clicked" handler="on_btn_optimalBsearchTree_clicked" swapped="no"/>
             <style>
               <class name="menu"/>
             </style>
@@ -159,8 +159,8 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_markup" translatable="yes">Calcula el resultado de la multiplicacion de matrices</property>
-            <signal name="clicked" handler="on_display_pending" swapped="no"/>
+            <property name="tooltip_markup" translatable="yes">Nos indica la manera óptima de acomodar las matrices para su respectiva multiplicación la cual se pueda realizar a un menor costo</property>
+            <signal name="clicked" handler="on_btn_matrixMultiplication_clicked" swapped="no"/>
             <style>
               <class name="menu"/>
             </style>

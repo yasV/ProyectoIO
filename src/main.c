@@ -64,6 +64,10 @@ void on_btn_sportSeries_clicked() {
   system("./seriesDeportivas &");
 }
 
+void on_btn_matrixMultiplication_clicked() {
+    system("./matriz &");
+}
+
 void on_display_pending() {
   system("./pending &"); 
 }

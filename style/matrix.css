@@ -1,0 +1,53 @@
+GtkWindow.matrixWindow {
+	background-color: #47423F;
+}
+
+GtkLabel.instruction {
+	font-size: 10px;
+	color: white;
+	font-weight: bold;
+}
+
+GtkButton.boxEntryMatrix {
+	background: #045FB4;
+	color: white;
+	border-radius: 0;
+}
+
+GtkButton.boxEntryMatrix:hover {
+	color: white;
+	font-weight: bold;
+	background: #0174DF;
+}
+
+GtkButton.buttonMatrix {
+	border-radius: 0;
+	background: #084B8A;
+	color: white;
+	border: solid #084B8A;
+	padding: 0;
+}
+
+GtkButton.buttonMatrix:hover {
+	color: white;
+	font-weight: bold;
+}
+
+#header {
+	background: #084B8A;
+	color: white;
+	border-radius: 0;
+	font-weight: bold;
+}
+
+#newLabel {
+	font-size: 13px;
+	color: white;
+	font-weight: bold;
+}
+
+GtkEntry {
+	border-radius: 0;
+	background: #E6E6E6;
+	color: black;
+}

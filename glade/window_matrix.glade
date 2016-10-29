@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkWindow" id="window_final">
+    <property name="width_request">800</property>
+    <property name="height_request">690</property>
+    <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_window_final_destroy" swapped="no"/>
+    <child>
+      <object class="GtkFixed" id="fixed4">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkFrame" id="frame1">
+            <property name="width_request">752</property>
+            <property name="height_request">267</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow_tableM">
+                    <property name="width_request">740</property>
+                    <property name="height_request">250</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="lbl_tableM">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Tabla M</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">12</property>
+            <property name="y">13</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame2">
+            <property name="width_request">752</property>
+            <property name="height_request">267</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow_tableP">
+                    <property name="width_request">740</property>
+                    <property name="height_request">250</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="lbl_tableP">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Tabla P</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">17</property>
+            <property name="y">297</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame5">
+            <property name="width_request">620</property>
+            <property name="height_request">100</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment7">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed8">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow_solution">
+                        <property name="width_request">600</property>
+                        <property name="height_request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="opacity">0.94999999999999996</property>
+                        <property name="resize_mode">immediate</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="y">7</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Solución:</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">92</property>
+            <property name="y">581</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="matrixWindow"/>
+    </style>
+  </object>
+  <object class="GtkWindow" id="window_initial">
+    <property name="width_request">550</property>
+    <property name="height_request">250</property>
+    <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_window_initial_destroy" swapped="no"/>
+    <child>
+      <object class="GtkFixed" id="fixed1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkBox" id="box1">
+            <property name="width_request">200</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkButton" id="btn_manualEntry">
+                <property name="label" translatable="yes">Ingresar Datos</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_manualEntry_clicked" swapped="no"/>
+                <style>
+                  <class name="boxEntryMatrix"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_fileEntry">
+                <property name="label" translatable="yes">Cargar Archivo</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_fileEntry_clicked" swapped="no"/>
+                <style>
+                  <class name="boxEntryMatrix"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <style>
+              <class name="boxEntryReplace"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">25</property>
+            <property name="y">73</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame_manualEntry">
+            <property name="width_request">233</property>
+            <property name="height_request">94</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkButton" id="btn_getMatrixNumber">
+                        <property name="label" translatable="yes">Crear</property>
+                        <property name="width_request">100</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_btn_getMatrixNumber_clicked" swapped="no"/>
+                        <style>
+                          <class name="buttonMatrix"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">117</property>
+                        <property name="y">47</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbutton_matrixNumber">
+                        <property name="width_request">200</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="numeric">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">17</property>
+                        <property name="y">7</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Ingrese el número de llaves:</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">287</property>
+            <property name="y">23</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame_fileEntry">
+            <property name="width_request">236</property>
+            <property name="height_request">93</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkFileChooserButton" id="filechooser_btn">
+                        <property name="width_request">200</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">24</property>
+                        <property name="y">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_getFile">
+                        <property name="label" translatable="yes">Cargar</property>
+                        <property name="width_request">100</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_btn_getFile_clicked" swapped="no"/>
+                        <style>
+                          <class name="buttonMatrix"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">124</property>
+                        <property name="y">46</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Seleccione el archivo a cargar</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">285</property>
+            <property name="y">137</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="matrixWindow"/>
+    </style>
+  </object>
+  <object class="GtkWindow" id="window_secondWindow">
+    <property name="width_request">700</property>
+    <property name="height_request">250</property>
+    <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_window_secondWindow_destroy" swapped="no"/>
+    <child>
+      <object class="GtkFixed" id="fixed5">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkFrame" id="frame3">
+            <property name="width_request">512</property>
+            <property name="height_request">130</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed6">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow_initialTable">
+                        <property name="width_request">650</property>
+                        <property name="height_request">100</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="y">7</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="opacity">0.98999999999999999</property>
+                <property name="label" translatable="yes">Ingrese los valores correspondientes para cada dimensión:</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">16</property>
+            <property name="y">13</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_getData">
+            <property name="label" translatable="yes">Obtener</property>
+            <property name="width_request">200</property>
+            <property name="height_request">30</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_btn_getData_clicked" swapped="no"/>
+            <style>
+              <class name="buttonMatrix"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">473</property>
+            <property name="y">191</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame4">
+            <property name="width_request">310</property>
+            <property name="height_request">60</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment6">
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed7">
+                    <property name="height_request">32</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkEntry" id="entry_fileName">
+                        <property name="width_request">270</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <style>
+                          <class name="entryReplace"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="y">7</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Ingrese el nombre del archivo para guardar los datos</property>
+                <style>
+                  <class name="instruction"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">23</property>
+            <property name="y">152</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="matrixWindow"/>
+    </style>
+  </object>
+</interface>
