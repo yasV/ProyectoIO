@@ -9,7 +9,7 @@ GtkLabel.instruction {
 }
 
 GtkButton.boxEntryMatrix {
-	background: #045FB4;
+	background: #4C0B5F;
 	color: white;
 	border-radius: 0;
 }
@@ -17,14 +17,14 @@ GtkButton.boxEntryMatrix {
 GtkButton.boxEntryMatrix:hover {
 	color: white;
 	font-weight: bold;
-	background: #0174DF;
+	background: #8904B1;
 }
 
 GtkButton.buttonMatrix {
 	border-radius: 0;
-	background: #084B8A;
+	background: #4C0B5F;
 	color: white;
-	border: solid #084B8A;
+	border: solid #4C0B5F;
 	padding: 0;
 }
 
@@ -34,7 +34,7 @@ GtkButton.buttonMatrix:hover {
 }
 
 #header {
-	background: #084B8A;
+	background: #4C0B5F;
 	color: white;
 	border-radius: 0;
 	font-weight: bold;

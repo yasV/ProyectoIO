@@ -92,19 +92,16 @@ int main(int argc, char *argv[]) {
 
 /***************FUNCIONES**********************/
 void createFile(char *fileName) {
-  //file_tableData = fopen(fileName,"w+");
+  file_tableData = fopen(fileName,"w+");
 
-  //for(int row = 0; row < 2; row++) 
-  //{
-    for(int column=0; column < inputMatrixNumber + 1; column++) 
-    {
-      int d = gtk_spin_button_get_value_as_int ( GTK_SPIN_BUTTON(initialTable[1][column]) );
-      printf("D%d : %d\n",column, d );
-      //fprintf(file_tableData,"%s;",(gtk_entry_get_text(GTK_ENTRY(initialTable[row][column]))));
-    }
-    //fprintf(file_tableData,"\n");
- // }
-  //fclose(file_tableData);
+  for(int column=0; column < inputMatrixNumber + 1; column++) 
+  {
+    int dValue = gtk_spin_button_get_value_as_int ( GTK_SPIN_BUTTON(initialTable[1][column]) );
+    fprintf(file_tableData,"%d;", dValue);
+  }
+  fprintf(file_tableData,"\n");
+
+  fclose(file_tableData);
 }
 
 void createInitialTable() {
@@ -137,6 +134,44 @@ void createInitialTable() {
       else{
         initialTable[row][column] = gtk_spin_button_new_with_range(1,10000,1);
         gtk_grid_attach (GTK_GRID (g_initialTable),initialTable[row][column] , column, row, 1, 1);
+      }
+    }
+  }
+
+  gtk_widget_show_all(windowSecond); 
+}
+
+void createTableDataFile() {
+  int keys = inputMatrixNumber + 1;
+  initialTable = calloc(2,sizeof(GtkWidget**));
+
+  g_initialTable = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_initialTable), g_initialTable);
+
+  for(int j = 0; j < 2; j++) {
+    initialTable[j] = calloc(keys,sizeof(GtkWidget*));
+  }
+
+  for(int row =0; row < 2; row++) 
+  {
+    for(int column=0; column < keys; column++) 
+    {
+      char str[4];
+      char dimensionName[10] = "d";
+      sprintf(str, "%d", column);
+      strcat(dimensionName, str);
+
+      if (row == 0){
+        initialTable[row][column] = gtk_entry_new();
+        gtk_grid_attach (GTK_GRID (g_initialTable),initialTable[row][column] , column, row, 1, 1);
+        gtk_entry_set_text (GTK_ENTRY(initialTable[row][column]),dimensionName);
+        gtk_widget_set_name(initialTable[row][column],"header");
+        gtk_widget_set_sensitive(initialTable[row][column],FALSE);
+      }
+      else{
+        initialTable[row][column] = gtk_spin_button_new_with_range(1,10000,1);
+        gtk_grid_attach (GTK_GRID (g_initialTable),initialTable[row][column] , column, row, 1, 1);
+        gtk_spin_button_set_value (GTK_SPIN_BUTTON(initialTable[row][column]), dValueArray[column]);
       }
     }
   }
@@ -242,7 +277,6 @@ void on_btn_fileEntry_clicked() {
 
 void on_btn_getMatrixNumber_clicked() {
   inputMatrixNumber = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON(g_spinbutton_matrixNumber));
-  printf("Total de matrices %d\n", inputMatrixNumber );
   createInitialTable();
   
   gtk_widget_hide(windowInitial);
@@ -250,12 +284,9 @@ void on_btn_getMatrixNumber_clicked() {
 }
 
 void on_btn_getFile_clicked(){
-  //inputMatrixNumber = countRowsFile( gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)) );
-  printf("Nombre Archivo: %s\n", gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)) );
-  //Objects matrixDataFile[inputMatrixNumber];
-  //startFill(matrixDataFile, gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)) );
-
-  //createTableDataFile(matrixDataFile);
+  inputMatrixNumber = getMatrixNumber( gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(g_filechooser_btn)) );
+  setData( gtk_file_chooser_get_filename( GTK_FILE_CHOOSER(g_filechooser_btn)) );
+  createTableDataFile();
 
   gtk_widget_hide(windowInitial);
   gtk_widget_show_now(windowSecond);
@@ -274,9 +305,7 @@ void on_btn_getData_clicked() {
   strcat(fileName, gtk_entry_get_text (GTK_ENTRY(g_entry_fileName)));
   strcat(fileName, ".cvs");
 
-  printf("Archivo Creado: %s\n", fileName);
   createFile(fileName);
-  //createObjects();
 
   createTableM();
   createTableP();
@@ -284,6 +313,7 @@ void on_btn_getData_clicked() {
   gtk_widget_hide(windowSecond);
   gtk_widget_show_now(windowFinal);
 }
+
 /***************TERCERA PANTALLA**********************/
 void on_window_final_destroy() {
   free(initialTable);
