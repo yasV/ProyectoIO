@@ -86,7 +86,6 @@ int scanner() {
 void setData(char *address) {
 	int totalCh = getTotalCharacter(address);
 	fileData = fopen(address,"r");
-	
 	int row = 0;
 	int formatPosition = 0;
 	int action = scanner();
@@ -104,3 +103,69 @@ void setData(char *address) {
 
 	fclose(fileData);
 }
+
+void startAlgorithm(){
+	inputMatrixNumber = getMatrixNumber("ejemplo1.cvs");
+	setData("ejemplo1.cvs");
+	
+}
+
+
+void optimalMatrix(int matrix[inputMatrixNumber+1][inputMatrixNumber+1],int p[inputMatrixNumber+1][inputMatrixNumber+1]){
+for (int i=1;i<inputMatrixNumber+1;i++){
+			for (int j=1;j<inputMatrixNumber+1;j++){
+				matrix[i][j] = 0;
+				p[i][j] = 0;
+			}
+	}
+
+
+	for (int i=1;i<inputMatrixNumber+1;i++){
+		for (int j=1;j<inputMatrixNumber+1;j++){
+			if (j==i+1){
+				int value = dValueArray[i-1] * dValueArray[i] * dValueArray [j];
+				for (int x=j-1;x>0;x--){
+					matrix[x][j]= -1;
+
+				}
+				p[i][j] = j-1;
+				matrix[i][j] = value ;
+
+			}
+		}
+	}
+
+	for(int col=1;col<inputMatrixNumber+1;col++){
+		for (int row=inputMatrixNumber;row>0;row--){
+			if (matrix[row][col]==-1){
+				int min = 0;
+				int k_p = 0;
+				for (int k=row;k<=col-1;k++){
+					int actualValue = matrix[row][k]+matrix[k+1][col]+(dValueArray[row-1]*dValueArray[col]*dValueArray[k]);
+					if (min == 0){
+						min = actualValue;
+						k_p = k;
+					}
+					if (min > actualValue){
+						min = actualValue;
+						k_p = k;
+							
+					}
+			}
+				matrix[row][col] = min;
+				p[row][col] = k_p;
+				
+			}
+
+		}
+	}
+
+
+
+	
+	
+
+
+
+}
+

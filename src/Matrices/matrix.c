@@ -179,7 +179,7 @@ void createTableDataFile() {
   gtk_widget_show_all(windowSecond); 
 }
 
-void createTableM() {
+void createTableM(int matrix[inputMatrixNumber+1][inputMatrixNumber+1]) {
   int keys = inputMatrixNumber + 1;
   tableM = calloc(keys,sizeof(GtkWidget**));
 
@@ -210,13 +210,20 @@ void createTableM() {
         gtk_entry_set_text (GTK_ENTRY(tableM[row][column]),str);
         gtk_widget_set_name(tableM[row][column],"header");
       }
+
+      if (column !=0 && row !=0 && row<column){
+        sprintf(str,"%d",matrix[row][column]);
+        gtk_entry_set_text (GTK_ENTRY(tableM[row][column]),str);
+      }
     }
   }
+
+  gtk_entry_set_text (GTK_ENTRY(tableM[1][1]),"0");  
   gtk_widget_set_name(tableM[0][0],"header");
   gtk_widget_show_all(windowFinal);
 }
 
-void createTableP() {
+void createTableP(int p[inputMatrixNumber+1][inputMatrixNumber+1]) {
   int keys = inputMatrixNumber + 1;
   tableP = calloc(keys,sizeof(GtkWidget**));
 
@@ -247,8 +254,15 @@ void createTableP() {
         gtk_entry_set_text (GTK_ENTRY(tableP[row][column]),str);
         gtk_widget_set_name(tableP[row][column],"header");
       }
+
+        if (column !=0 && row !=0 && row<column){
+        sprintf(str,"%d",p[row][column]);
+        gtk_entry_set_text (GTK_ENTRY(tableP[row][column]),str);
+      }
     }
   }
+
+ 
   gtk_widget_set_name(tableP[0][0],"header");
   gtk_widget_show_all(windowFinal);
 }
@@ -306,15 +320,33 @@ void on_btn_getData_clicked() {
   strcat(fileName, ".cvs");
 
   createFile(fileName);
+  int matrix[inputMatrixNumber+1][inputMatrixNumber+1];
+  int p [inputMatrixNumber+1][inputMatrixNumber+1];
+  optimalMatrix(matrix,p);
+  
+    for (int i=1;i<inputMatrixNumber+1;i++){
+    for (int j=1;j<inputMatrixNumber+1;j++){
+      printf("%d-",p[i][j]);
+    }
+    printf("\n");
+  }
 
-  createTableM();
-  createTableP();
+    for (int i=1;i<inputMatrixNumber+1;i++){
+    for (int j=1;j<inputMatrixNumber+1;j++){
+      printf("%d-",matrix[i][j]);
+    }
+    printf("\n");
+  }
+
+
+  createTableM(matrix);
+  createTableP(p);
   displaySolution();
   gtk_widget_hide(windowSecond);
   gtk_widget_show_now(windowFinal);
 }
 
-/***************TERCERA PANTALLA**********************/
+/***************TERCERA PANTALLA*********************/
 void on_window_final_destroy() {
   free(initialTable);
   free(tableM);
