@@ -27,7 +27,7 @@ int getTotalCharacter(char *address) {
 	int c;
 	if (fileData) {
 	    while ((c = getc(fileData)) != EOF)
-	        total++;
+	      total++;
 	    fclose(fileData);
 	}
 	return total;
@@ -105,49 +105,30 @@ void setData(char *address) {
 	fclose(fileData);
 }
 
-void startAlgorithm(){
-	inputMatrixNumber = getMatrixNumber("ejemplo1.cvs");
-	setData("ejemplo1.cvs");
-	
+void PrintAnswer(int tableP[inputMatrixNumber+1][inputMatrixNumber+1],int pStart,int pTotalMatrix) {
+ 	if(pStart == pTotalMatrix) { 	
+    char intermediate[100];
+    memset(intermediate,'\0',strlen(intermediate));
+    strcat(answer,"A");
+    sprintf(intermediate,"%d",pStart);
+    strcat(answer,intermediate);  
+  }
+  else {
+    strcat(answer," ( ");
+    PrintAnswer(tableP,pStart,tableP[pStart][pTotalMatrix]);
+    PrintAnswer(tableP,tableP[pStart][pTotalMatrix]+1,pTotalMatrix);
+    strcat(answer," ) ");
+  }
 }
 
-
-
- void PrintAnswer(int t[inputMatrixNumber+1][inputMatrixNumber+1],int i,int j)
- {
-     if(i==j)
-     {
-     	
-     	char intermediate[100];
-     	memset(intermediate,'\0',strlen(intermediate));
-     	strcat(answer,"A");
-     	sprintf(intermediate,"%d",i);
-     	strcat(answer,intermediate);
-     	
-        
-     }
-     else
-     {
-       
-         
-         strcat(answer,"(");
-         PrintAnswer(t,i,t[i][j]);
-         PrintAnswer(t,t[i][j]+1,j);
-     
-         strcat(answer,")");
-         }
- 
- }
-
-
 void optimalMatrix(int matrix[inputMatrixNumber+1][inputMatrixNumber+1],int p[inputMatrixNumber+1][inputMatrixNumber+1]){
-for (int i=1;i<inputMatrixNumber+1;i++){
-			for (int j=1;j<inputMatrixNumber+1;j++){
-				matrix[i][j] = 0;
-				p[i][j] = 0;
-			}
+	
+	for (int i=1;i<inputMatrixNumber+1;i++) {
+		for (int j=1;j<inputMatrixNumber+1;j++) {
+			matrix[i][j] = 0;
+			p[i][j] = 0;
+		}
 	}
-
 
 	for (int i=1;i<inputMatrixNumber+1;i++){
 		for (int j=1;j<inputMatrixNumber+1;j++){
@@ -155,11 +136,9 @@ for (int i=1;i<inputMatrixNumber+1;i++){
 				int value = dValueArray[i-1] * dValueArray[i] * dValueArray [j];
 				for (int x=j-1;x>0;x--){
 					matrix[x][j]= -1;
-
 				}
 				p[i][j] = j-1;
 				matrix[i][j] = value ;
-
 			}
 		}
 	}
@@ -177,28 +156,13 @@ for (int i=1;i<inputMatrixNumber+1;i++){
 					}
 					if (min > actualValue){
 						min = actualValue;
-						k_p = k;
-							
+						k_p = k;	
 					}
-			}
+				}
 				matrix[row][col] = min;
 				p[row][col] = k_p;
-				
 			}
-
 		}
 	}
-
-
-
-
-
-	
-	//memset(answer,'\0',strlen(answer));
 	PrintAnswer(p,1,inputMatrixNumber);
-	printf("%s\n",answer );
-
-
-
 }
-

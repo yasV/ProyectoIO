@@ -137,7 +137,6 @@ void createInitialTable() {
       }
     }
   }
-
   gtk_widget_show_all(windowSecond); 
 }
 
@@ -261,7 +260,6 @@ void createTableP(int p[inputMatrixNumber+1][inputMatrixNumber+1]) {
       }
     }
   }
-
  
   gtk_widget_set_name(tableP[0][0],"header");
   gtk_widget_show_all(windowFinal);
@@ -272,6 +270,15 @@ void displaySolution() {
   gtk_widget_set_name(solutionText,"newLabel");
   gtk_container_add (GTK_CONTAINER (g_scrolledwindow_solution), solutionText);
   gtk_widget_show_all(windowFinal);
+}
+
+void fillDValueArray() {
+  dValueArray = calloc(inputMatrixNumber + 1, sizeof(int));
+
+  for (int column = 0; column < inputMatrixNumber + 1; ++column)
+  {
+    dValueArray[column] = gtk_spin_button_get_value_as_int ( GTK_SPIN_BUTTON(initialTable[1][column]) );
+  }
 }
 
 /***************PRIMER PANTALLA**********************/
@@ -320,10 +327,11 @@ void on_btn_getData_clicked() {
   strcat(fileName, ".cvs");
 
   createFile(fileName);
-  int matrix[inputMatrixNumber+1][inputMatrixNumber+1];
-  int p [inputMatrixNumber+1][inputMatrixNumber+1];
-  optimalMatrix(matrix,p);
+  fillDValueArray();
 
+  int matrix[inputMatrixNumber+1][inputMatrixNumber+1];
+  int p[inputMatrixNumber+1][inputMatrixNumber+1];
+  optimalMatrix(matrix,p);
 
   createTableM(matrix);
   createTableP(p);
@@ -336,5 +344,6 @@ void on_btn_getData_clicked() {
 void on_window_final_destroy() {
   free(initialTable);
   free(tableM);
+  free(dValueArray);
   gtk_main_quit();
 }
