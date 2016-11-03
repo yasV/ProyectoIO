@@ -17,6 +17,7 @@ typedef struct  {
 int *dValueArray;
 
 FILE * fileData;
+char answer[3000];
 
 
 int getTotalCharacter(char *address) {
@@ -111,6 +112,34 @@ void startAlgorithm(){
 }
 
 
+
+ void PrintAnswer(int t[inputMatrixNumber+1][inputMatrixNumber+1],int i,int j)
+ {
+     if(i==j)
+     {
+     	
+     	char intermediate[100];
+     	memset(intermediate,'\0',strlen(intermediate));
+     	strcat(answer,"A");
+     	sprintf(intermediate,"%d",i);
+     	strcat(answer,intermediate);
+     	
+        
+     }
+     else
+     {
+       
+         
+         strcat(answer,"(");
+         PrintAnswer(t,i,t[i][j]);
+         PrintAnswer(t,t[i][j]+1,j);
+     
+         strcat(answer,")");
+         }
+ 
+ }
+
+
 void optimalMatrix(int matrix[inputMatrixNumber+1][inputMatrixNumber+1],int p[inputMatrixNumber+1][inputMatrixNumber+1]){
 for (int i=1;i<inputMatrixNumber+1;i++){
 			for (int j=1;j<inputMatrixNumber+1;j++){
@@ -162,8 +191,12 @@ for (int i=1;i<inputMatrixNumber+1;i++){
 
 
 
+
+
 	
-	
+	//memset(answer,'\0',strlen(answer));
+	PrintAnswer(p,1,inputMatrixNumber);
+	printf("%s\n",answer );
 
 
 

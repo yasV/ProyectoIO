@@ -268,7 +268,7 @@ void createTableP(int p[inputMatrixNumber+1][inputMatrixNumber+1]) {
 }
 
 void displaySolution() {
-  GtkWidget* solutionText = gtk_label_new ("Aca iria la solucion");
+  GtkWidget* solutionText = gtk_label_new (answer);
   gtk_widget_set_name(solutionText,"newLabel");
   gtk_container_add (GTK_CONTAINER (g_scrolledwindow_solution), solutionText);
   gtk_widget_show_all(windowFinal);
@@ -323,20 +323,6 @@ void on_btn_getData_clicked() {
   int matrix[inputMatrixNumber+1][inputMatrixNumber+1];
   int p [inputMatrixNumber+1][inputMatrixNumber+1];
   optimalMatrix(matrix,p);
-  
-    for (int i=1;i<inputMatrixNumber+1;i++){
-    for (int j=1;j<inputMatrixNumber+1;j++){
-      printf("%d-",p[i][j]);
-    }
-    printf("\n");
-  }
-
-    for (int i=1;i<inputMatrixNumber+1;i++){
-    for (int j=1;j<inputMatrixNumber+1;j++){
-      printf("%d-",matrix[i][j]);
-    }
-    printf("\n");
-  }
 
 
   createTableM(matrix);
